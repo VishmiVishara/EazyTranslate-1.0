@@ -1,0 +1,40 @@
+package com.iit.eazytranslate.database.repository;
+
+import android.app.Application;
+
+import androidx.lifecycle.LiveData;
+
+import com.iit.eazytranslate.database.DbManager;
+import com.iit.eazytranslate.database.dao.PhraseDao;
+import com.iit.eazytranslate.database.model.Phrase;
+
+import java.util.List;
+
+public class PhraseRepository {
+    private PhraseDao phraseDao;
+
+    public PhraseRepository(Application application) {
+        phraseDao = DbManager.getDbInstance(application).phraseDao();
+
+    }
+
+    public LiveData<List<Phrase>> getAllPhrases() {
+        return  phraseDao.getAll();
+    }
+
+    public void add(final Phrase phrase) {
+        DbManager.databaseWriteExecutor.execute(() -> {
+            phraseDao.save(phrase);
+        });
+    }
+
+    public LiveData<Phrase> isExistsPhrase(String phrase) {
+        return  phraseDao.isExists(phrase);
+    }
+
+    public void update(final Phrase phrase) {
+        DbManager.databaseWriteExecutor.execute(() -> {
+            phraseDao.update(phrase.getPhrase(), phrase.getPid());
+        });
+    }
+}
