@@ -25,6 +25,12 @@ public class TranslationRepository {
         });
     }
 
+    public  void deleteById(int pid) {
+        DbManager.databaseWriteExecutor.execute(() -> {
+            translationDao.deleteById(pid);
+        });
+    }
+
     public LiveData<List<Translate>> getAllTranslations() {
         return  translationDao.getAll();
     }

@@ -1,5 +1,7 @@
 package com.iit.eazytranslate.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.iit.eazytranslate.R;
+import com.iit.eazytranslate.util.Util;
 
 public class MainScreenActivity extends AppCompatActivity {
 
@@ -31,7 +34,7 @@ public class MainScreenActivity extends AppCompatActivity {
         addPhrases = findViewById(R.id.btnAddPhrases);
         displayPhrases = findViewById(R.id.btnDisplayPhrases);
         editPhrases = findViewById(R.id.btnEditPhrases);
-        languageSubscribe  = findViewById(R.id.btnLanguageSubscription);
+        languageSubscribe = findViewById(R.id.btnLanguageSubscription);
         translate = findViewById(R.id.btnTranslate);
         btnOfflineTranslate = findViewById(R.id.btnOfflineTranslate);
     }
@@ -78,8 +81,7 @@ public class MainScreenActivity extends AppCompatActivity {
         translate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainScreenActivity.this, TranslateActivity.class);
-                startActivity(intent);
+                networkAvailability();
             }
         });
 
@@ -91,5 +93,28 @@ public class MainScreenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void networkAvailability() {
+        if (!Util.isConnectedToNetwork(MainScreenActivity.this)) {
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+            alertBuilder.setMessage("You are Offline!! Some translations will not work in Offline");
+            alertBuilder.setCancelable(true);
+
+            alertBuilder.setPositiveButton(
+                    "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(MainScreenActivity.this, TranslateActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+            AlertDialog alert11 = alertBuilder.create();
+            alert11.show();
+        } else {
+            Intent intent = new Intent(MainScreenActivity.this, TranslateActivity.class);
+            startActivity(intent);
+        }
     }
 }

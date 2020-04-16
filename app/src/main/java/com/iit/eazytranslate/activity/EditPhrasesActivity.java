@@ -27,6 +27,7 @@ import com.iit.eazytranslate.adapter.EditPhraseAdapter;
 import com.iit.eazytranslate.database.DbManager;
 import com.iit.eazytranslate.database.model.Phrase;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
+import com.iit.eazytranslate.database.viewModel.TranslationViewModel;
 import com.iit.eazytranslate.util.Config;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class EditPhrasesActivity extends AppCompatActivity {
     private Phrase selectedPhrase;
 
     private PhraseViewModel phraseViewModel;
+    private TranslationViewModel translationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class EditPhrasesActivity extends AppCompatActivity {
         reset();
 
         phraseViewModel = new ViewModelProvider(this).get(PhraseViewModel.class);
+        translationViewModel = new ViewModelProvider(this).get(TranslationViewModel.class);
+
         phraseViewModel.getAllPhrases().observe(this, phrases -> {
             this.phrases = phrases;
             phraseEditAdapter = new EditPhraseAdapter(phrases);
@@ -93,9 +97,11 @@ public class EditPhrasesActivity extends AppCompatActivity {
                             phraseNew.setPhrase(phraseTxt);
                             phraseViewModel.update(phraseNew);
 
+
                             phrases.get(phraseEditAdapter.getSelectedPosition()).setPhrase(phraseTxt);
                             selectedPhrase.setPhrase(phraseTxt);
                             phraseEditAdapter.notifyDataSetChanged();
+                            translationViewModel.deleteById(selectedPhrase.getPid());
                             reset();
 
                             Toast.makeText(EditPhrasesActivity.this, "Phrase Updated!", Toast.LENGTH_LONG).show();

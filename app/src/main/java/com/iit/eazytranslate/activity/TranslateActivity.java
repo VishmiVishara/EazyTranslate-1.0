@@ -41,6 +41,7 @@ import com.iit.eazytranslate.service.LanguageTranslatorService;
 import com.iit.eazytranslate.service.TextToSpeechService;
 import com.iit.eazytranslate.util.TextToSpeechImpl;
 import com.iit.eazytranslate.util.TranslatorServiceTranslateImpl;
+import com.iit.eazytranslate.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 txtSelectedPhrase.setText(selectedPhrase.getPhrase());
                 btnTranslate.setVisibility(View.VISIBLE);
                 btnPronounce.setVisibility(View.INVISIBLE);
+                btnTranslate.setEnabled(true);
                 translatedPhase.setText("");
             }
         }
@@ -129,6 +131,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 langTranslate.setLang_code(subscription.get(spinner.getSelectedItemPosition()).getLang_code());
                 btnPronounce.setVisibility(View.INVISIBLE);
                 btnTranslate.setVisibility(View.VISIBLE);
+                btnTranslate.setEnabled(true);
                 translatedPhase.setText(null);
                 selectPhraseCardView.setVisibility(View.VISIBLE);
             }
@@ -150,10 +153,6 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 }
                 btnTranslate.setEnabled(false);
                 langTranslate.setPhrase(selectedPhrase.getPhrase());
-                System.out.println(langTranslate.toString());
-//                translationViewModel.getAllTranslations().observe(TranslateActivity.this, translates -> {
-//                    System.out.println(translates);
-//                });
 
                 final LiveData<Translate> isAlreadyTranslated  = translationViewModel.isAlreadyTranslated(selectedPhrase.getPid(),langTranslate.getLang_code());
 
@@ -168,6 +167,12 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                             btnPronounce.setVisibility(View.VISIBLE);
                             btnTranslate.setEnabled(true);
                         }else {
+
+                            if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
+                                Toast.makeText(TranslateActivity.this, "Your internet connection not available",
+                                        Toast.LENGTH_LONG).show();
+                                return;
+                            }
                             LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceTranslate = TranslateActivity.this;
                             LanguageTranslatorService.getLanguageTranslatorServiceInstance().getTranslateResult(langTranslate);
                         }
@@ -179,6 +184,13 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
         btnPronounce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
+                    Toast.makeText(TranslateActivity.this, "Your internet connection not available",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 btnPronounce.setEnabled(false);
                 TextToSpeechService.getTextToSpeechService().textSpeechServiceImpl = TranslateActivity.this;
                 TextToSpeechService.getTextToSpeechService().setSelectedLanguageCode(langTranslate.getLang_code());

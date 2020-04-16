@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.iit.eazytranslate.database.DbManager;
 import com.iit.eazytranslate.database.model.LangTranslate;
 import com.iit.eazytranslate.database.model.OfflineData;
 import com.iit.eazytranslate.database.model.Translate;
@@ -28,6 +29,12 @@ public class TranslationViewModel extends AndroidViewModel {
 
     public void add(Translate translate) {
         translationRepository.add(translate);
+    }
+
+    public  void deleteById(int pid) {
+        DbManager.databaseWriteExecutor.execute(() -> {
+            translationRepository.deleteById(pid);
+        });
     }
 
     public LiveData<Translate> isAlreadyTranslated(int pid, String lang_code) {

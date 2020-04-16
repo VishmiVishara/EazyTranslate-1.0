@@ -25,4 +25,7 @@ public interface TranslationDao {
 
     @Query("SELECT * from translate INNER JOIN phrase on translate.pid = phrase.pid WHERE lang_code = :lang_code ")
     LiveData<List<OfflineData>>getTranslateWord(String lang_code);
+
+    @Query("DELETE FROM translate WHERE pid= :pid")
+    void deleteById(int pid);
 }
