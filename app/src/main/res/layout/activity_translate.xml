@@ -58,6 +58,7 @@
                         android:layout_height="0dp"
                         android:background="#E3F2FD"
                         android:clickable="false"
+                        android:fontFamily="@font/segoe"
                         android:gravity="center"
                         android:soundEffectsEnabled="false"
                         android:text="English"
@@ -160,8 +161,10 @@
                             android:layout_height="0dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"
+                            android:fontFamily="@font/segoe"
                             android:text="Translate"
                             android:textColor="#F4F7FA"
+                            android:textColorLink="#FFFFFF"
                             android:textSize="18sp"
                             app:backgroundTint="#64B5F6"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -284,14 +287,36 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
+                    android:fontFamily="@font/segoe"
                     android:gravity="center_vertical"
                     android:text="Select a Pharse"
                     android:textColor="#1E88E5"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="176dp"
+                    android:layout_height="53dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView4"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Button
+                        android:id="@+id/btnTranAll"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Translate All"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
