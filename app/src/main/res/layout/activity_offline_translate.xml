@@ -20,6 +20,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#F2F3F4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -44,11 +45,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="8dp"
+                android:background="@drawable/spinner_background"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.7" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,11 +72,11 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                app:cardCornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:cardCornerRadius="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -83,6 +86,7 @@
                         android:id="@+id/constraintLayout33"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
+                        android:background="#E3F2FD"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHeight_percent="0.1"
                         app:layout_constraintStart_toStartOf="parent"
@@ -92,11 +96,12 @@
                             android:id="@+id/constraintLayout32"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:clickable="true"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.0"
-                            app:layout_constraintWidth_percent="0.5">
+                            app:layout_constraintWidth_percent="0.45">
 
                             <TextView
                                 android:id="@+id/textView5"
@@ -106,6 +111,58 @@
                                 android:layout_marginEnd="10dp"
                                 android:gravity="center"
                                 android:text="English"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <!--                            <com.google.android.material.textfield.TextInputLayout-->
+                            <!--                                android:id="@+id/engTxt"-->
+                            <!--                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+                            <!--                                android:layout_width="match_parent"-->
+                            <!--                                android:layout_height="0dp"-->
+                            <!--                                android:layout_marginStart="10dp"-->
+                            <!--                                android:layout_marginEnd="10dp"-->
+                            <!--                                android:layout_marginBottom="4dp"-->
+                            <!--                                android:hint="From Language"-->
+                            <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+                            <!--                                app:layout_constraintEnd_toEndOf="parent"-->
+                            <!--                                app:layout_constraintStart_toStartOf="parent"-->
+                            <!--                                app:layout_constraintTop_toTopOf="parent"-->
+                            <!--                                >-->
+
+                            <!--                                <com.google.android.material.textfield.TextInputEditText-->
+                            <!--                                    android:id="@+id/engTxtEdittxt"-->
+                            <!--                                    android:layout_width="match_parent"-->
+                            <!--                                    android:layout_height="wrap_content"-->
+                            <!--                                    android:clickable="false"-->
+                            <!--                                    android:cursorVisible="false"-->
+                            <!--                                    android:enabled="false"-->
+                            <!--                                    android:inputType="textEmailAddress"-->
+                            <!--                                    android:text="English"-->
+                            <!--                                    android:textAlignment="center"-->
+                            <!--                                    android:textColor="#1E88E5" />-->
+                            <!--                            </com.google.android.material.textfield.TextInputLayout>-->
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout34"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintWidth_percent="0.45">
+
+                            <TextView
+                                android:id="@+id/txtTransLang"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:gravity="center"
+                                android:text="*Language"
+                                android:textSize="18sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -116,21 +173,15 @@
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/constraintLayout34"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout32"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <TextView
-                                android:id="@+id/txtTransLang"
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_marginEnd="10dp"
-                                android:gravity="center"
-                                android:text="TextView"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                            <ImageView
+                                android:id="@+id/imageView6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/arrow_convert" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
