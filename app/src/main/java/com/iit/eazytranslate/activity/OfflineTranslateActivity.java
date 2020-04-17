@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -165,14 +166,20 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
 
     @Override
     public void translateAll(LangTranslate value) {
-
         System.out.println(value.getTranslations());
-        setupTranslationView(value);
+        if (value.getTranslations().size() > 0) {
+            setupTranslationView(value);
+        }else{
+            value.getPhraseList().clear();
+            setupTranslationView(value);
+            Toast.makeText(OfflineTranslateActivity.this, "Sorry! Translation Failed",
+                    Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void setupTranslationView(LangTranslate translates){
         recyclerView = findViewById(R.id.translateAllRecuclar);
-
 
         TranslateAllPhrasesAdapter translateAllPhrasesAdapter = new TranslateAllPhrasesAdapter(translates);
         recyclerView.setAdapter(translateAllPhrasesAdapter);

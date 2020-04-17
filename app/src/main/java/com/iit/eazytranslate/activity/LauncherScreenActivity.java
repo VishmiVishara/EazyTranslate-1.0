@@ -50,9 +50,7 @@ public class LauncherScreenActivity extends AppCompatActivity implements Transla
             languageViewModel.add(lang);
         }
 
-        languageViewModel.getLanguages().observe(this, languages1 -> {
-            System.out.println(languages1);
-        });
+
     }
 
 }

@@ -1,6 +1,12 @@
 package com.iit.eazytranslate.activity;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -8,11 +14,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
+import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
+import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
 import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.adapter.LanguageSubscriptionAdapter;
 import com.iit.eazytranslate.database.model.DisplayLanguage;
@@ -20,13 +23,18 @@ import com.iit.eazytranslate.database.model.Language;
 import com.iit.eazytranslate.database.model.LanguageSubscription;
 import com.iit.eazytranslate.database.viewModel.LanguageSubscriptionViewModel;
 import com.iit.eazytranslate.database.viewModel.LanguageViewModel;
+import com.iit.eazytranslate.service.LanguageTranslatorService;
+import com.iit.eazytranslate.util.TranslatorServiceLoadLanguagesImpl;
+import com.iit.eazytranslate.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LanguageSubscriptionActivity extends AppCompatActivity {
+public class LanguageSubscriptionActivity extends AppCompatActivity implements TranslatorServiceLoadLanguagesImpl {
 
     private RecyclerView recyclerViewLanguages;
+    private ConstraintLayout layoutError;
+    private Button btnDownload;
     private List<DisplayLanguage> displayLanguageList = new ArrayList<>();
     private Button btnUpdate;
     private List<Language> languages;
@@ -34,6 +42,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
     private LanguageViewModel languageViewModel;
     private LanguageSubscriptionViewModel languageSubscriptionViewModel;
     private List<LanguageSubscription> subscriptions = new ArrayList<>();
+    private List<Language>languageListDownload = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
 
     private void setupActivity(){
         recyclerViewLanguages = findViewById(R.id.recyclerViewLanguages);
+        layoutError           = findViewById(R.id.layoutError);
+        btnDownload           = findViewById(R.id.btnDownload);
+
+        LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceLoadLanguages = this;
 
         languageViewModel = new ViewModelProvider(this).get(LanguageViewModel.class);
         languageViewModel.getLanguages().observe(this, languageList -> {
@@ -62,6 +75,11 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(List<LanguageSubscription> subscriptionList) {
                     subscribedLanguagesObservable.removeObserver(this);
+
+                    if(subscriptionList.size() <= 0){
+                        layoutError.setVisibility(View.VISIBLE);
+                    }
+
                     LanguageSubscriptionActivity.this.subscriptions = subscriptionList;
                     System.out.println(subscriptionList);
                     for(LanguageSubscription languageSubscription : subscriptionList){
@@ -78,7 +96,6 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
                 }
             });
         });
-
 
         recyclerViewLanguages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewLanguages.getContext(), LinearLayoutManager.VERTICAL);
@@ -120,26 +137,58 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
             }
         });
 
+        btnDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!Util.isConnectedToNetwork(LanguageSubscriptionActivity.this)){
+                    Toast.makeText(LanguageSubscriptionActivity.this, "Internet connection not available.!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                LanguageTranslatorService.getLanguageTranslatorServiceInstance().getLanguageList();
+
+            }
+        });
+    }
+
+    private void setupDownloadRecycleView(List<Language> languageList){
+
+        this.languages = languageList;
+        for (Language language : languages){
+            DisplayLanguage displayLanguage = new DisplayLanguage();
+            displayLanguage.setLanguageName(language.getLanguage());
+            displayLanguage.setSubscribe(false);
+            displayLanguageList.add(displayLanguage);
+        }
+
+        layoutError.setVisibility(View.INVISIBLE);
+        languageSubscriptionAdapter = new LanguageSubscriptionAdapter(displayLanguageList);
+        recyclerViewLanguages.setAdapter(languageSubscriptionAdapter);
+
+        recyclerViewLanguages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewLanguages.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerViewLanguages.addItemDecoration(dividerItemDecoration);
     }
 
     private Language findObject(String lang, Boolean isCode) {
 
         Language foundObject = null;
 
-        for(Language language : languages) {
+        for (Language language : languages) {
 
             if (isCode) {
-                if (language.getLang_code().equals(lang)){
+                if (language.getLang_code().equals(lang)) {
                     foundObject = language;
                     break;
                 }
-            }else {
-                if (language.getLanguage().equals(lang)){
+            } else {
+                if (language.getLanguage().equals(lang)) {
                     foundObject = language;
                     break;
                 }
             }
-            }
+        }
 
 
         return  foundObject;
@@ -158,5 +207,28 @@ public class LanguageSubscriptionActivity extends AppCompatActivity {
         }
 
         return  foundObject;
+    }
+
+    @Override
+    public void loadLanguages(IdentifiableLanguages value) {
+
+        if (languages == null)
+            return;
+
+        System.out.println(languages);
+        int index = 0;
+        for (IdentifiableLanguage language : value.getLanguages()) {
+            Language lang = new Language();
+            lang.setLang_code(language.getLanguage());
+            lang.setLanguage(language.getName());
+            languageViewModel.add(lang);
+
+            languageListDownload.add(lang);
+            index++;
+
+            if(index == value.getLanguages().size()){
+                setupDownloadRecycleView(languageListDownload);
+            }
+        }
     }
 }

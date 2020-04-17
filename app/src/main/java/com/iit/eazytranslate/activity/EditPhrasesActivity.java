@@ -97,7 +97,6 @@ public class EditPhrasesActivity extends AppCompatActivity {
                             phraseNew.setPhrase(phraseTxt);
                             phraseViewModel.update(phraseNew);
 
-
                             phrases.get(phraseEditAdapter.getSelectedPosition()).setPhrase(phraseTxt);
                             selectedPhrase.setPhrase(phraseTxt);
                             phraseEditAdapter.notifyDataSetChanged();
@@ -108,7 +107,6 @@ public class EditPhrasesActivity extends AppCompatActivity {
 
                         } else {
                             Toast.makeText(EditPhrasesActivity.this, "Sorry! It's not an existing phrase", Toast.LENGTH_LONG).show();
-                            phraseEditLayout.getEditText().setText(null);
                             return;
                         }
                     }
@@ -145,6 +143,7 @@ public class EditPhrasesActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             selectedPhrase = phraseEditAdapter.getSelectedPhrase();
+            btnEdit.setEnabled(true);
 
             if (editStatus){
                 phraseEditLayout.getEditText().setText(selectedPhrase.getPhrase());
@@ -156,7 +155,7 @@ public class EditPhrasesActivity extends AppCompatActivity {
     private void reset(){
         hideKeyboard(this);
         editStatus = false;
-        btnEdit.setEnabled(true);
+        btnEdit.setEnabled(false);
         btnEditSave.setEnabled(false);
         phraseEditLayout.getEditText().setText(null);
         phraseEditLayout.getEditText().clearFocus();
