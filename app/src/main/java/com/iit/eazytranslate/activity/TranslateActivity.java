@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -65,6 +66,8 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
     private LanguageViewModel languageViewModel;
     private LanguageSubscriptionViewModel languageSubscriptionViewModel;
     private TranslationViewModel translationViewModel;
+    private ConstraintLayout conError;
+    private TextView conErrorTxt;
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -98,6 +101,8 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
         translatedPhase = findViewById(R.id.txtTranslated);
         btnTranslate = findViewById(R.id.btnTranslater);
         selectPhraseCardView = findViewById(R.id.card_viewSelectPhrase);
+        conError = findViewById(R.id.conError);
+        conErrorTxt = findViewById(R.id.conErrorTxt);
 
         btnPronounce.setVisibility(View.INVISIBLE);
         selectPhraseCardView.setVisibility(View.INVISIBLE);
@@ -106,6 +111,11 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
         translationViewModel = new ViewModelProvider(TranslateActivity.this).get(TranslationViewModel.class);
 
         phraseViewModel.getAllPhrases().observe(this, phrases -> {
+            if(phrases.size() <= 0){
+                conError.setVisibility(View.VISIBLE);
+                conErrorTxt.setText("You haven't add any phrases..");
+                return;
+            }
             translationAdapter = new TranslationAdapter(phrases);
             recyclerView.setAdapter(translationAdapter);
         });
@@ -169,7 +179,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                         }else {
 
                             if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
-                                Toast.makeText(TranslateActivity.this, "Your internet connection not available",
+                                Toast.makeText(TranslateActivity.this, "Your internet connection is not available",
                                         Toast.LENGTH_LONG).show();
                                 return;
                             }
@@ -214,6 +224,12 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
             public void onChanged(List<LanguageSubscription> subscriptionList) {
                 subscribedLanguagesObservable.removeObserver(this);
                 TranslateActivity.this.subscription = subscriptionList;
+
+                if (subscription.size() <= 0) {
+                    conError.setVisibility(View.VISIBLE);
+                    conErrorTxt.setText("You Haven't Subscribed any languages..");
+                    return;
+                }
 
                 List<String> languageNames = new ArrayList<>();
 

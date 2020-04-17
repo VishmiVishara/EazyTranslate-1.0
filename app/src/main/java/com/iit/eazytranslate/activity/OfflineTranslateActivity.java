@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,6 +40,8 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
     private Spinner spinnerLanguage;
     private TextView txtTransLang;
     private RecyclerView recyclerView;
+    private ConstraintLayout conOffline;
+    private TextView conOfflineTxt;
 
     private TranslateLanguageDropDownAdapter dataAdapter = null;
     private List<LanguageSubscription> subscription;
@@ -60,6 +63,8 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
         spinnerLanguage  = findViewById(R.id.offlinrSpinner);
         txtTransLang = findViewById(R.id.txtTransLang);
         recyclerView = findViewById(R.id.translateAllRecuclar);
+        conOfflineTxt = findViewById(R.id.conOfflineTxt);
+        conOffline = findViewById(R.id.conOffline);
 
         translationViewModel = new ViewModelProvider(OfflineTranslateActivity.this).get(TranslationViewModel.class);
         languageSubscriptionViewModel = new ViewModelProvider(this).get(LanguageSubscriptionViewModel.class);
@@ -81,6 +86,12 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
             public void onChanged(List<LanguageSubscription> subscriptionList) {
                 subscribedLanguagesObservable.removeObserver(this);
                 OfflineTranslateActivity.this.subscription = subscriptionList;
+
+                if(subscription.size() <= 0){
+                    conOffline.setVisibility(View.VISIBLE);
+                    conOfflineTxt.setText("You haven't subscribed any languages");
+                    return;
+                }
 
                 List<String> languageNames = new ArrayList<>();
 
@@ -128,6 +139,13 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
                 public void onChanged(List<Phrase> phrases) {
                     phrasesListObservable.removeObserver(this);
                     phraseList = phrases;
+
+                    if(phraseList.size() <= 0){
+                        conOffline.setVisibility(View.VISIBLE);
+                        conOfflineTxt.setText("You haven't add any words/phrases");
+                        return;
+                    }
+
                     LangTranslate langTranslate = new LangTranslate();
                     langTranslate.setLang_code(languageSubscription.getLang_code());
                     for (int i = 0; i < phraseList.size(); i++) {

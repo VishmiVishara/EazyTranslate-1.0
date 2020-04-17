@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,6 +41,7 @@ public class EditPhrasesActivity extends AppCompatActivity {
 
     private TextInputLayout phraseEditLayout;
     private EditPhraseAdapter phraseEditAdapter;
+    private ConstraintLayout layoutError;
     private List<Phrase> phrases;
     private boolean editStatus = false;
     private Phrase selectedPhrase;
@@ -68,6 +70,10 @@ public class EditPhrasesActivity extends AppCompatActivity {
 
         phraseViewModel.getAllPhrases().observe(this, phrases -> {
             this.phrases = phrases;
+
+            if(phrases.size() <= 0)
+                layoutError.setVisibility(View.VISIBLE);
+
             phraseEditAdapter = new EditPhraseAdapter(phrases);
             recyclerView.setAdapter(phraseEditAdapter);
         });
@@ -137,6 +143,9 @@ public class EditPhrasesActivity extends AppCompatActivity {
         btnEdit = findViewById(R.id.btnEdit);
         btnEditSave = findViewById(R.id.btnSaveEdit);
         phraseEditLayout = findViewById(R.id.phraseEditLayout);
+        layoutError = findViewById(R.id.layoutError);
+
+        layoutError.setVisibility(View.INVISIBLE);
     }
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
