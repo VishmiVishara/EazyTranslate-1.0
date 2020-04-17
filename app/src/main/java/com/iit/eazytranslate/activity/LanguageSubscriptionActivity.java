@@ -54,14 +54,22 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
 
     private void setupActivity(){
         recyclerViewLanguages = findViewById(R.id.recyclerViewLanguages);
-        layoutError           = findViewById(R.id.layoutError);
-        btnDownload           = findViewById(R.id.btnDownload);
+        layoutError  = findViewById(R.id.layoutError);
+        btnDownload = findViewById(R.id.btnDownload);
+
+        layoutError.setVisibility(View.INVISIBLE);
 
         LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceLoadLanguages = this;
 
         languageViewModel = new ViewModelProvider(this).get(LanguageViewModel.class);
         languageViewModel.getLanguages().observe(this, languageList -> {
             this.languages = languageList;
+
+            if(languages.size() <= 0){
+                layoutError.setVisibility(View.VISIBLE);
+                return;
+            }
+
             for (Language language : languages){
                 DisplayLanguage displayLanguage = new DisplayLanguage();
                 displayLanguage.setLanguageName(language.getLanguage());
@@ -75,10 +83,6 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                 @Override
                 public void onChanged(List<LanguageSubscription> subscriptionList) {
                     subscribedLanguagesObservable.removeObserver(this);
-
-                    if(subscriptionList.size() <= 0){
-                        layoutError.setVisibility(View.VISIBLE);
-                    }
 
                     LanguageSubscriptionActivity.this.subscriptions = subscriptionList;
                     System.out.println(subscriptionList);

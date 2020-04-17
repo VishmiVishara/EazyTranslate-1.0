@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.adapter.DisplayPhrasesAdapter;
@@ -20,7 +21,7 @@ import java.util.List;
 public class DisplayPhrasesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-
+    private TextView error;
     private PhraseViewModel phraseViewModel;
 
     @Override
@@ -33,10 +34,17 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
 
     private void setupActivity(){
         recyclerView = findViewById(R.id.recyclerView);
+        error = findViewById(R.id.error);
+
         phraseViewModel = new ViewModelProvider(this).get(PhraseViewModel.class);
         phraseViewModel.getAllPhrases().observe(this, phrases -> {
-            DisplayPhrasesAdapter phraseDisplayAdapter = new DisplayPhrasesAdapter(phrases);
-            recyclerView.setAdapter(phraseDisplayAdapter);
+            if(phrases.size() > 0) {
+                DisplayPhrasesAdapter phraseDisplayAdapter = new DisplayPhrasesAdapter(phrases);
+                recyclerView.setAdapter(phraseDisplayAdapter);
+            }
+            else {
+                error.setText("Please Add Word/Phrases to View..");
+            }
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

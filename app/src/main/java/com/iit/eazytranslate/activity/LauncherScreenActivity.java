@@ -25,7 +25,6 @@ public class LauncherScreenActivity extends AppCompatActivity implements Transla
 
         languageViewModel = new ViewModelProvider(this).get(LanguageViewModel.class);
 
-        //User user = DbManager.getAppDatabase(getApplicationContext()).userDao().getLoggedInUser();
 
         LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceLoadLanguages = this;
         LanguageTranslatorService.getLanguageTranslatorServiceInstance().getLanguageList();
