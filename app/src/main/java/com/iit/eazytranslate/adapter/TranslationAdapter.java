@@ -79,6 +79,16 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
         return phrasesDataset.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return  position;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
         public TextView textView;
@@ -100,7 +110,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
             for(View viw : viewArrayList){
                 viw.setBackground(new ColorDrawable(0xffffffff));
             }
-            viwBackground.setBackground(new ColorDrawable(0xFFD8F4BB));
+            viwBackground.setBackground(new ColorDrawable(0xffb9f4f6));
             mAdapter.onItemHolderClick(TranslationAdapter.MyViewHolder.this);
             Intent intent = new Intent("selected_phrase_intent");
             intent.putExtra("selected_index", selectedPosition);

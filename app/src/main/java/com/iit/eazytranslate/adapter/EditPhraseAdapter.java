@@ -89,7 +89,7 @@ public class EditPhraseAdapter extends RecyclerView.Adapter<EditPhraseAdapter.My
             mAdapter.onItemHolderClick(MyViewHolder.this);
 
             Intent intent = new Intent("message_subject_intent");
-            intent.putExtra("selected", selectedPosition);
+            intent.putExtra("selected_index", selectedPosition);
             LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(intent);
         }
     }

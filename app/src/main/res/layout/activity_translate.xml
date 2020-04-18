@@ -105,7 +105,6 @@
 
                     <Spinner
                         android:id="@+id/spinnerTranslate"
-                        style="@android:style/Widget.DeviceDefault.Spinner"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:background="@drawable/spinner_background"
@@ -184,7 +183,7 @@
                 android:layout_height="0dp"
                 android:background="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.2999"
+                app:layout_constraintHeight_percent="0.29"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout22">
 
