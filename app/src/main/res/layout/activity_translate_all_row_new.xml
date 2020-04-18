@@ -10,7 +10,7 @@
         android:id="@+id/txtPhraseTransAll"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
+        android:fontFamily="@font/segoe"
         android:gravity="center|center_vertical"
         android:text=""
         android:textSize="18sp"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent="0.35" />
+        app:layout_constraintWidth_percent="0.45" />
 
     <ImageView
         android:id="@+id/imageView14"
@@ -30,30 +30,43 @@
         app:layout_constraintWidth_percent=".07"
         app:srcCompat="@drawable/arrow_1" />
 
-    <TextView
-        android:id="@+id/txtTransAll"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView14"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent=".4" />
-
-    <ImageButton
-        android:id="@+id/btnPronounce"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="9dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@null"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txtTransAll"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sound_1" />
+        app:layout_constraintWidth_percent=".45">
+
+        <TextView
+            android:id="@+id/txtTransAll"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/segoe"
+            android:gravity="center"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnPronounce"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="1" />
+
+        <ImageButton
+            android:id="@+id/btnPronounce"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent=".25"
+            app:srcCompat="@drawable/sound_1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.iit.eazytranslate.R;
-import com.iit.eazytranslate.database.model.DisplayLanguage;
+import com.iit.eazytranslate.database.model.ViewLanguage;
 
 import java.util.List;
 
 public class LanguageSubscriptionAdapter extends RecyclerView.Adapter<LanguageSubscriptionAdapter.LanguageViewHolder>  {
 
-    private List<DisplayLanguage> displayLanguages;
+    private List<ViewLanguage> displayLanguages;
 
-    public List<DisplayLanguage> getDisplayLanguages() {
+    public List<ViewLanguage> getDisplayLanguages() {
         return displayLanguages;
     }
 
-    public LanguageSubscriptionAdapter(List<DisplayLanguage> displayLanguages) {
+    public LanguageSubscriptionAdapter(List<ViewLanguage> displayLanguages) {
         this.displayLanguages = displayLanguages;
     }
 
@@ -41,7 +41,7 @@ public class LanguageSubscriptionAdapter extends RecyclerView.Adapter<LanguageSu
     @Override
     public void onBindViewHolder(@NonNull final LanguageViewHolder holder, int position) {
 
-        final DisplayLanguage displayLanguage =  displayLanguages.get(position);
+        final ViewLanguage displayLanguage =  displayLanguages.get(position);
         holder.textView.setText(displayLanguages.get(position).getLanguageName());
         holder.checkBoxSubscribe.setTag(position);
         holder.checkBoxSubscribe.setChecked(displayLanguage.isSubscribe());

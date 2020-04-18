@@ -221,7 +221,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
             public void onClick(View view) {
                 Intent intent = new Intent(TranslateActivity.this, TranslateAllActivity.class);
                 intent.putExtra("lan_code", langTranslate.getLang_code());
-                intent.putExtra("lan_name", langTranslate.getLanguageName());
+                intent.putExtra("language_name", langTranslate.getLanguageName());
                 startActivity(intent);
             }
         });

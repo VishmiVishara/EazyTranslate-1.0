@@ -18,7 +18,7 @@ import com.ibm.watson.language_translator.v3.model.IdentifiableLanguage;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
 import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.adapter.LanguageSubscriptionAdapter;
-import com.iit.eazytranslate.database.model.DisplayLanguage;
+import com.iit.eazytranslate.database.model.ViewLanguage;
 import com.iit.eazytranslate.database.model.Language;
 import com.iit.eazytranslate.database.model.LanguageSubscription;
 import com.iit.eazytranslate.database.viewModel.LanguageSubscriptionViewModel;
@@ -35,7 +35,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
     private RecyclerView recyclerViewLanguages;
     private ConstraintLayout layoutError;
     private Button btnDownload;
-    private List<DisplayLanguage> displayLanguageList = new ArrayList<>();
+    private List<ViewLanguage> displayLanguageList = new ArrayList<>();
     private Button btnUpdate;
     private List<Language> languages;
     private LanguageSubscriptionAdapter languageSubscriptionAdapter = null;
@@ -71,10 +71,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
             }
 
             for (Language language : languages){
-                DisplayLanguage displayLanguage = new DisplayLanguage();
-                displayLanguage.setLanguageName(language.getLanguage());
-                displayLanguage.setSubscribe(false);
-                displayLanguageList.add(displayLanguage);
+                ViewLanguage viewLanguage = new ViewLanguage();
+                viewLanguage.setLanguageName(language.getLanguage());
+                viewLanguage.setSubscribe(false);
+                displayLanguageList.add(viewLanguage);
             }
 
             languageSubscriptionViewModel = new ViewModelProvider(this).get(LanguageSubscriptionViewModel.class);
@@ -87,7 +87,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                     LanguageSubscriptionActivity.this.subscriptions = subscriptionList;
                     System.out.println(subscriptionList);
                     for(LanguageSubscription languageSubscription : subscriptionList){
-                        DisplayLanguage findObj = findObjectFormDisplayList(languageSubscription.getLang_name());
+                        ViewLanguage findObj = findObjectFormDisplayList(languageSubscription.getLang_name());
                         if (findObj != null){
                             System.out.println("hello" + findObj.getLanguageName());
                             findObj.setSubscribe(true);
@@ -119,10 +119,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<DisplayLanguage> langList = languageSubscriptionAdapter.getDisplayLanguages();
+                List<ViewLanguage> langList = languageSubscriptionAdapter.getDisplayLanguages();
                 languageSubscriptionViewModel.delete();
 
-                for (DisplayLanguage lang : langList) {
+                for (ViewLanguage lang : langList) {
                     if(lang.isSubscribe()) {
                         LanguageSubscription languageSubscription = new LanguageSubscription();
                         Language language = findObject(lang.getLanguageName(), false);
@@ -134,9 +134,6 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                     }
                 }
 
-                languageSubscriptionViewModel.getSubscribedLanguages().observe(LanguageSubscriptionActivity.this, subscriptionList -> {
-                    System.out.println(subscriptionList);
-                });
                 Toast.makeText(LanguageSubscriptionActivity.this, "Updated Subscribed Languages!", Toast.LENGTH_LONG).show();
             }
         });
@@ -160,7 +157,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
 
         this.languages = languageList;
         for (Language language : languages){
-            DisplayLanguage displayLanguage = new DisplayLanguage();
+            ViewLanguage displayLanguage = new ViewLanguage();
             displayLanguage.setLanguageName(language.getLanguage());
             displayLanguage.setSubscribe(false);
             displayLanguageList.add(displayLanguage);
@@ -199,11 +196,11 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
     }
 
 
-    private DisplayLanguage findObjectFormDisplayList(String lang) {
+    private ViewLanguage findObjectFormDisplayList(String lang) {
 
-        DisplayLanguage foundObject = null;
+        ViewLanguage foundObject = null;
 
-        for(DisplayLanguage language : displayLanguageList) {
+        for(ViewLanguage language : displayLanguageList) {
             if (language.getLanguageName().equals(lang)){
                 foundObject = language;
                 break;
@@ -219,7 +216,6 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
         if (languages == null)
             return;
 
-        System.out.println(languages);
         int index = 0;
         for (IdentifiableLanguage language : value.getLanguages()) {
             Language lang = new Language();

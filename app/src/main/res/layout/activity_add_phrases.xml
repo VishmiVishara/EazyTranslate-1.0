@@ -70,6 +70,7 @@
                     android:fontFamily="@font/segoe"
                     android:gravity="center|center_vertical"
                     android:text="Add a Word or phrase"
+                    android:textColor="#2196F3"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

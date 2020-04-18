@@ -1,6 +1,6 @@
 package com.iit.eazytranslate.database.model;
 
-public class DisplayLanguage {
+public class ViewLanguage {
 
     private String languageName;
 

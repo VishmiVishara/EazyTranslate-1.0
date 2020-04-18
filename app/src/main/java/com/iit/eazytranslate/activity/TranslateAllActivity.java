@@ -63,7 +63,7 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
 
         Bundle bundle = getIntent().getExtras();
         languageCode  = bundle.getString("lan_code");
-        languageName  = bundle.getString("lan_name");
+        languageName  = bundle.getString("language_name");
 
         txtTransLang.setText(languageName);
         translationViewModel = new ViewModelProvider(TranslateAllActivity.this).get(TranslationViewModel.class);
