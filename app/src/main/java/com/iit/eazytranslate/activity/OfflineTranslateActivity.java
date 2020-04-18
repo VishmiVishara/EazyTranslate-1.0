@@ -116,6 +116,7 @@ public class OfflineTranslateActivity extends AppCompatActivity {
                                 spinnerLanguage.getSelectedItemPosition() >=
                                         spinnerLanguage.getCount())
                             return;
+                        conOffline.setVisibility(View.INVISIBLE);
                         System.out.println(spinnerLanguage.getSelectedItemPosition());
                         languageSubscription = subscription.get(spinnerLanguage.getSelectedItemPosition());
                         txtTransLang.setText(subscription.get(spinnerLanguage.getSelectedItemPosition()).getLang_name());
@@ -132,22 +133,25 @@ public class OfflineTranslateActivity extends AppCompatActivity {
     }
 
     private void translateAllPhrases() {
-
         final LiveData<List<OfflineData>> translateWordListObservable = translationViewModel
                 .getTranslateWord(languageSubscription.getLang_code());
+
         translateWordListObservable.observe(this, new Observer<List<OfflineData>>() {
             @Override
             public void onChanged(List<OfflineData> offlineData) {
                 translateWordListObservable.removeObserver(this);
-
                 LangTranslate languageTranslator = new LangTranslate();
 
-                for (OfflineData offlineData1 : offlineData) {
+                if (offlineData.size() <= 0) {
+                    conOffline.setVisibility(View.VISIBLE);
+                    conOfflineTxt.setText("Sorry..No Saved Translations for Selected Language!");
+                    return;
+                }
 
+                for (OfflineData offlineData1 : offlineData) {
                     languageTranslator.setPhraseList(offlineData1.getPhrase());
                     languageTranslator.setTranslation(offlineData1.getTranslate_phrase());
                 }
-
                 setupTranslationView(languageTranslator);
             }
         });

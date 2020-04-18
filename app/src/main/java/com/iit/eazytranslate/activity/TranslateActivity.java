@@ -70,7 +70,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
         public void onReceive(Context context, Intent intent) {
 
             Bundle bundle = intent.getExtras();
-            int selectedIndex = bundle.getInt("selected");
+            int selectedIndex = bundle.getInt("selected_index");
 
             if (phraseList.size() <= selectedIndex)
                 return;

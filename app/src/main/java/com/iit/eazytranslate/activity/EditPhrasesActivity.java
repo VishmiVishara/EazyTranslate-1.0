@@ -151,13 +151,18 @@ public class EditPhrasesActivity extends AppCompatActivity {
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            selectedPhrase = phraseEditAdapter.getSelectedPhrase();
+            Bundle bundle = intent.getExtras();
+            int selectedIndex = bundle.getInt("selected_index");
+
+            if (phrases.size() <= selectedIndex)
+                return;
+
+            selectedPhrase = phrases.get(selectedIndex);
             btnEdit.setEnabled(true);
 
             if (editStatus){
                 phraseEditLayout.getEditText().setText(selectedPhrase.getPhrase());
             }
-
         }
     };
 

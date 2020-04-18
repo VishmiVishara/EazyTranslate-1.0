@@ -1,5 +1,11 @@
 package com.iit.eazytranslate.activity;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LiveData;
@@ -9,23 +15,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.ibm.watson.language_translator.v3.model.TranslationResult;
 import com.iit.eazytranslate.R;
-import com.iit.eazytranslate.adapter.OfflineTranslatePhrasesAdapter;
 import com.iit.eazytranslate.adapter.TranslateAllAdapter;
-import com.iit.eazytranslate.adapter.TranslateLanguageDropDownAdapter;
 import com.iit.eazytranslate.database.model.LangTranslate;
-import com.iit.eazytranslate.database.model.LanguageSubscription;
-import com.iit.eazytranslate.database.model.OfflineData;
 import com.iit.eazytranslate.database.model.Phrase;
 import com.iit.eazytranslate.database.model.Translate;
-import com.iit.eazytranslate.database.viewModel.LanguageSubscriptionViewModel;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
 import com.iit.eazytranslate.database.viewModel.TranslationViewModel;
 import com.iit.eazytranslate.service.LanguageTranslatorService;
@@ -91,6 +86,7 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
                     return;
                 }
 
+
                 LangTranslate langTranslate = new LangTranslate();
                 langTranslate.setLang_code(languageCode);
                 for (int i = 0; i < phraseList.size(); i++) {
@@ -106,14 +102,26 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
     private void setupTranslationView(LangTranslate translates){
         recyclerView = findViewById(R.id.recyclarViewTransAll);
 
-        for(int i = 0; i < translates.getTranslations().size(); i++){
-            Translate translate =  new Translate();
+        for (int i = 0; i < translates.getTranslations().size(); i++) {
+
+            Translate translate = new Translate();
             translate.setTranslatePhrase(translates.getTranslations().get(i));
             translate.setPid(translates.getPidList().get(i));
             translate.setLanguageCode(languageCode);
-            System.out.println(translate);
-            translationViewModel.add(translate);
 
+            final LiveData<Translate> isAlreadyTranslated = translationViewModel.isAlreadyTranslated(translate.getPid(), translates.getLang_code());
+
+            isAlreadyTranslated.observe(TranslateAllActivity.this, new Observer<Translate>() {
+                @Override
+                public void onChanged(Translate isTranslate) {
+                    isAlreadyTranslated.removeObserver(this);
+
+                    if (isTranslate == null) {
+                        System.out.println(translate);
+                        translationViewModel.add(translate);
+                    }
+                }
+            });
         }
 
         TranslateAllAdapter translateAllPhrasesAdapter = new TranslateAllAdapter(translates, this);
