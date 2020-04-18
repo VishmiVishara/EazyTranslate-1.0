@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -23,13 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.iit.eazytranslate.R;
-import com.iit.eazytranslate.adapter.DisplayPhrasesAdapter;
 import com.iit.eazytranslate.adapter.EditPhraseAdapter;
-import com.iit.eazytranslate.database.DbManager;
 import com.iit.eazytranslate.database.model.Phrase;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
 import com.iit.eazytranslate.database.viewModel.TranslationViewModel;
-import com.iit.eazytranslate.util.Config;
 
 import java.util.List;
 
@@ -101,7 +99,7 @@ public class EditPhrasesActivity extends AppCompatActivity {
                             Phrase phraseNew = new Phrase();
                             phraseNew.setPid(selectedPhrase.getPid());
                             phraseNew.setPhrase(phraseTxt);
-                            phraseViewModel.update(phraseNew);
+                            phraseViewModel.updatePhrase(phraseNew);
 
                             phrases.get(phraseEditAdapter.getSelectedPosition()).setPhrase(phraseTxt);
                             selectedPhrase.setPhrase(phraseTxt);
@@ -109,10 +107,17 @@ public class EditPhrasesActivity extends AppCompatActivity {
                             translationViewModel.deleteById(selectedPhrase.getPid());
                             reset();
 
-                            Toast.makeText(EditPhrasesActivity.this, "Phrase Updated!", Toast.LENGTH_LONG).show();
-
+                            Toast toast = Toast.makeText
+                                    (EditPhrasesActivity.this, "Phrase Updated!",
+                                            Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
                         } else {
-                            Toast.makeText(EditPhrasesActivity.this, "Sorry! It's not an existing phrase", Toast.LENGTH_LONG).show();
+                            Toast toast = Toast.makeText
+                                    (EditPhrasesActivity.this, "Sorry! It's not an existing phrase",
+                                            Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
                             return;
                         }
                     }

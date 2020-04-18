@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ibm.watson.language_translator.v3.model.TranslationResult;
 import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.adapter.OfflineTranslatePhrasesAdapter;
 import com.iit.eazytranslate.adapter.TranslateLanguageDropDownAdapter;
@@ -27,9 +25,7 @@ import com.iit.eazytranslate.database.model.Phrase;
 import com.iit.eazytranslate.database.viewModel.LanguageSubscriptionViewModel;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
 import com.iit.eazytranslate.database.viewModel.TranslationViewModel;
-import com.iit.eazytranslate.service.LanguageTranslatorService;
-import com.iit.eazytranslate.util.TranslatorServiceTranslateImpl;
-import com.iit.eazytranslate.util.Util;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +140,7 @@ public class OfflineTranslateActivity extends AppCompatActivity {
 
                 if (offlineData.size() <= 0) {
                     conOffline.setVisibility(View.VISIBLE);
-                    conOfflineTxt.setText("Sorry..No Saved Translations for Selected Language!");
+                    conOfflineTxt.setText("Sorry.. No Saved Translations for the Selected Language!");
                     return;
                 }
 

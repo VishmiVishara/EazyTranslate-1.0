@@ -18,18 +18,13 @@ public class LanguageSubscriptionRepository {
     }
 
     public LiveData<List<LanguageSubscription>> getAllSubscriptions() {
-        return  languageSubscriptionDao.getAll();
+        return  languageSubscriptionDao.getSubscribedLanguages();
     }
 
-    public void insert(LanguageSubscription languageSubscription) {
+    public void add(List<LanguageSubscription> languageSubscription) {
         DbManager.databaseWriteExecutor.execute(() -> {
-            languageSubscriptionDao.insert(languageSubscription);
+            languageSubscriptionDao.add(languageSubscription);
         });
     }
 
-    public void delete() {
-        DbManager.databaseWriteExecutor.execute(() -> {
-            languageSubscriptionDao.deleteAll();
-        });
-    }
 }

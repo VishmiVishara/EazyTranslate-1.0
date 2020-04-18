@@ -16,6 +16,17 @@ public class LanguageSubscription {
     @ColumnInfo(name = "lang_name")
     private String lang_name;
 
+    @ColumnInfo(name = "isSubscribed")
+    private Boolean isSubscribed;
+
+    public Boolean getSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(Boolean subscribed) {
+        isSubscribed = subscribed;
+    }
+
     @NonNull
     public String getLang_code() {
         return lang_code;
@@ -38,6 +49,7 @@ public class LanguageSubscription {
         return "LanguageSubscription{" +
                 "lang_code='" + lang_code + '\'' +
                 ", lang_name='" + lang_name + '\'' +
+                ", isSubscribed=" + isSubscribed +
                 '}';
     }
 }

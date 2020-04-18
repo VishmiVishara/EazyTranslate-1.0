@@ -12,12 +12,10 @@ import java.util.List;
 
 @Dao
 public interface LanguageSubscriptionDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long insert(LanguageSubscription languageSubscription);
 
-    @Query("SELECT * FROM language_subscription")
-    LiveData<List<LanguageSubscription>> getAll();
+    @Query("SELECT * FROM language_subscription where isSubscribed=1")
+    LiveData<List<LanguageSubscription>> getSubscribedLanguages();
 
-    @Query("DELETE from language_subscription")
-    int deleteAll();
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void add(List<LanguageSubscription> languageSubscriptionList);
 }

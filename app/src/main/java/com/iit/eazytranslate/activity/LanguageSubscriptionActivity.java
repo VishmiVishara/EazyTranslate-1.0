@@ -1,6 +1,7 @@
 package com.iit.eazytranslate.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -77,9 +78,12 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                 displayLanguageList.add(viewLanguage);
             }
 
-            languageSubscriptionViewModel = new ViewModelProvider(this).get(LanguageSubscriptionViewModel.class);
-            final LiveData<List<LanguageSubscription>>subscribedLanguagesObservable = languageSubscriptionViewModel.getSubscribedLanguages();
-            subscribedLanguagesObservable.observe(this, new Observer<List<LanguageSubscription>>() {
+            languageSubscriptionViewModel = new ViewModelProvider(this)
+                    .get(LanguageSubscriptionViewModel.class);
+            final LiveData<List<LanguageSubscription>>subscribedLanguagesObservable =
+                    languageSubscriptionViewModel.getSubscribedLanguages();
+            subscribedLanguagesObservable.observe
+                    (this, new Observer<List<LanguageSubscription>>() {
                 @Override
                 public void onChanged(List<LanguageSubscription> subscriptionList) {
                     subscribedLanguagesObservable.removeObserver(this);
@@ -90,7 +94,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                         ViewLanguage findObj = findObjectFormDisplayList(languageSubscription.getLang_name());
                         if (findObj != null){
                             System.out.println("hello" + findObj.getLanguageName());
-                            findObj.setSubscribe(true);
+                            findObj.setSubscribe(languageSubscription.getSubscribed());
 
                         }
                     }
@@ -101,8 +105,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
             });
         });
 
-        recyclerViewLanguages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewLanguages.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerViewLanguages.setLayoutManager(new LinearLayoutManager
+                (this, LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration
+                (recyclerViewLanguages.getContext(), LinearLayoutManager.VERTICAL);
         recyclerViewLanguages.addItemDecoration(dividerItemDecoration);
 
         initializeUIComponents();
@@ -120,8 +126,8 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
             @Override
             public void onClick(View view) {
                 List<ViewLanguage> langList = languageSubscriptionAdapter.getDisplayLanguages();
-                languageSubscriptionViewModel.delete();
 
+                List<LanguageSubscription> languageSubscriptionList = new ArrayList<>();
                 for (ViewLanguage lang : langList) {
                     if(lang.isSubscribe()) {
                         LanguageSubscription languageSubscription = new LanguageSubscription();
@@ -129,12 +135,17 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
 
                         languageSubscription.setLang_code(language.getLang_code());
                         languageSubscription.setLang_name(lang.getLanguageName());
-                        languageSubscriptionViewModel.add(languageSubscription);
+                        languageSubscription.setSubscribed(lang.isSubscribe());
                         System.out.println(lang.getLanguageName());
+                        languageSubscriptionList.add(languageSubscription);
                     }
                 }
 
-                Toast.makeText(LanguageSubscriptionActivity.this, "Updated Subscribed Languages!", Toast.LENGTH_LONG).show();
+                languageSubscriptionViewModel.add(languageSubscriptionList);
+                Toast toast = Toast.makeText(LanguageSubscriptionActivity.this,
+                        "Updated Subscribed Languages!", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         });
 
@@ -143,10 +154,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
             public void onClick(View v) {
 
                 if (!Util.isConnectedToNetwork(LanguageSubscriptionActivity.this)){
-                    Toast.makeText(LanguageSubscriptionActivity.this, "Internet connection not available.!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LanguageSubscriptionActivity.this,
+                            "Internet connection not available.!", Toast.LENGTH_LONG).show();
                     return;
                 }
-
                 LanguageTranslatorService.getLanguageTranslatorServiceInstance().getLanguageList();
 
             }
@@ -167,15 +178,15 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
         languageSubscriptionAdapter = new LanguageSubscriptionAdapter(displayLanguageList);
         recyclerViewLanguages.setAdapter(languageSubscriptionAdapter);
 
-        recyclerViewLanguages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewLanguages.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerViewLanguages.setLayoutManager(new LinearLayoutManager
+                (this, LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration
+                (recyclerViewLanguages.getContext(), LinearLayoutManager.VERTICAL);
         recyclerViewLanguages.addItemDecoration(dividerItemDecoration);
     }
 
     private Language findObject(String lang, Boolean isCode) {
-
         Language foundObject = null;
-
         for (Language language : languages) {
 
             if (isCode) {
@@ -190,39 +201,30 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                 }
             }
         }
-
-
         return  foundObject;
     }
 
-
     private ViewLanguage findObjectFormDisplayList(String lang) {
-
         ViewLanguage foundObject = null;
-
         for(ViewLanguage language : displayLanguageList) {
             if (language.getLanguageName().equals(lang)){
                 foundObject = language;
                 break;
             }
         }
-
         return  foundObject;
     }
 
     @Override
     public void loadLanguages(IdentifiableLanguages value) {
-
         if (languages == null)
             return;
-
         int index = 0;
         for (IdentifiableLanguage language : value.getLanguages()) {
             Language lang = new Language();
             lang.setLang_code(language.getLanguage());
             lang.setLanguage(language.getName());
             languageViewModel.add(lang);
-
             languageListDownload.add(lang);
             index++;
 

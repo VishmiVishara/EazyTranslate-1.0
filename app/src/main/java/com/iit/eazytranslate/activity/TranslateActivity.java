@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -161,8 +162,10 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
             public void onClick(View view) {
 
                 if (selectedPhrase == null || selectedPhrase.getPhrase().equals("")) {
-                    Toast.makeText(TranslateActivity.this, "Please select a word or phrase",
-                            Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(TranslateActivity.this, "Please select a word or phrase",
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                     return;
                 }
                 btnTranslate.setEnabled(false);
@@ -183,8 +186,10 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                         } else {
 
                             if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
-                                Toast.makeText(TranslateActivity.this, "Your internet connection is not available",
-                                        Toast.LENGTH_LONG).show();
+                                Toast toast = Toast.makeText(TranslateActivity.this, "Your internet connection is not available",
+                                        Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
                                 return;
                             }
                             LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceTranslate = TranslateActivity.this;
@@ -200,8 +205,10 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
             public void onClick(View view) {
 
                 if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
-                    Toast.makeText(TranslateActivity.this, "Your internet connection not available",
-                            Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(TranslateActivity.this, "Your internet connection not available",
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                     return;
                 }
 
@@ -284,14 +291,18 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 translationViewModel.add(translate);
 
             } else {
-                Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
-                        Toast.LENGTH_LONG).show();
+                Toast toast = Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
+                        Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
 
                 btnPronounce.setVisibility(View.INVISIBLE);
             }
         } else {
-            Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
-                    Toast.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             btnPronounce.setVisibility(View.INVISIBLE);
         }
     }

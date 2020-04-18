@@ -1,6 +1,7 @@
 package com.iit.eazytranslate.activity;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -157,8 +158,10 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
         } else {
             value.getPhraseList().clear();
             setupTranslationView(value);
-            Toast.makeText(TranslateAllActivity.this, "Sorry! Translation Failed",
-                    Toast.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(TranslateAllActivity.this, "Sorry! Translation Failed",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
     }
 }

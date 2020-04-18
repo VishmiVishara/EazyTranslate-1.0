@@ -3,6 +3,7 @@ package com.iit.eazytranslate.activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,7 +28,6 @@ public class AddPhrasesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_phrases);
-
         setupActivity();
     }
 
@@ -35,15 +35,12 @@ public class AddPhrasesActivity extends AppCompatActivity {
         phraseViewModel = new ViewModelProvider(this).get(PhraseViewModel.class);
         initializeUIComponents();
         initializeListeners();
-
     }
 
     private void initializeUIComponents() {
         phraseInputLayout = findViewById(R.id.phraseInputLayout);
         btnSave = findViewById(R.id.btnSave);
-
     }
-
 
     private void initializeListeners() {
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +48,6 @@ public class AddPhrasesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String phraseTxt = phraseInputLayout.getEditText().getText().toString().toLowerCase().trim();
                 dbOperations(phraseTxt);
-
             }
         });
 
@@ -87,13 +83,17 @@ public class AddPhrasesActivity extends AppCompatActivity {
                 if (phrase == null) {
                     Phrase newPhrase = new Phrase();
                     newPhrase.setPhrase(phraseTxt);
-                    phraseViewModel.insert(newPhrase);
+                    phraseViewModel.add(newPhrase);
 
-                    Toast.makeText(AddPhrasesActivity.this, "Phrase Saved!!", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(AddPhrasesActivity.this, "Phrase Saved!!", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                     phraseInputLayout.getEditText().setText(null);
 
                 } else {
-                    Toast.makeText(AddPhrasesActivity.this, "Existing Phrase!!", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(AddPhrasesActivity.this, "Existing Phrase!!", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                     phraseInputLayout.getEditText().setText(null);
                     return;
                 }

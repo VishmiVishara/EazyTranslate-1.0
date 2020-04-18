@@ -24,7 +24,7 @@ public class PhraseViewModel extends AndroidViewModel {
         return phraseRepository.getAllPhrases();
     }
 
-    public void insert(Phrase phrase) {
+    public void add(Phrase phrase) {
         phraseRepository.add(phrase);
     }
 
@@ -32,7 +32,7 @@ public class PhraseViewModel extends AndroidViewModel {
         return phraseRepository.isExistsPhrase(phrase);
     }
 
-    public void update(Phrase phrase) {
+    public void updatePhrase(Phrase phrase) {
         phraseRepository.update(phrase);
     }
 }

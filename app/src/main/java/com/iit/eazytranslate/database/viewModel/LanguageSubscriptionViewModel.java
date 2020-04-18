@@ -24,12 +24,8 @@ public class LanguageSubscriptionViewModel extends AndroidViewModel {
         return languageSubscriptionRepository.getAllSubscriptions();
     }
 
-    public void add(LanguageSubscription languageSubscription) {
-        languageSubscriptionRepository.insert(languageSubscription);
-    }
-
-    public void delete() {
-        languageSubscriptionRepository.delete();
+    public void add(List<LanguageSubscription> languageSubscription) {
+        languageSubscriptionRepository.add(languageSubscription);
     }
 }
 
