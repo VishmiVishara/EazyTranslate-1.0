@@ -16,10 +16,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ibm.watson.language_translator.v3.LanguageTranslator;
 import com.ibm.watson.language_translator.v3.model.TranslationResult;
 import com.iit.eazytranslate.R;
-import com.iit.eazytranslate.adapter.TranslateAllPhrasesAdapter;
+import com.iit.eazytranslate.adapter.OfflineTranslatePhrasesAdapter;
 import com.iit.eazytranslate.adapter.TranslateLanguageDropDownAdapter;
 import com.iit.eazytranslate.database.model.LangTranslate;
 import com.iit.eazytranslate.database.model.LanguageSubscription;
@@ -35,7 +34,7 @@ import com.iit.eazytranslate.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OfflineTranslateActivity extends AppCompatActivity implements TranslatorServiceTranslateImpl {
+public class OfflineTranslateActivity extends AppCompatActivity {
 
     private Spinner spinnerLanguage;
     private TextView txtTransLang;
@@ -59,18 +58,19 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
         setupActivity();
     }
 
-    private void setupActivity(){
-        spinnerLanguage  = findViewById(R.id.offlinrSpinner);
+    private void setupActivity() {
+        spinnerLanguage = findViewById(R.id.offlinrSpinner);
         txtTransLang = findViewById(R.id.txtTransLang);
         recyclerView = findViewById(R.id.translateAllRecuclar);
         conOfflineTxt = findViewById(R.id.conOfflineTxt);
         conOffline = findViewById(R.id.conOffline);
 
-        translationViewModel = new ViewModelProvider(OfflineTranslateActivity.this).get(TranslationViewModel.class);
-        languageSubscriptionViewModel = new ViewModelProvider(this).get(LanguageSubscriptionViewModel.class);
+        translationViewModel = new ViewModelProvider(OfflineTranslateActivity.this)
+                .get(TranslationViewModel.class);
+        languageSubscriptionViewModel = new ViewModelProvider(this)
+                .get(LanguageSubscriptionViewModel.class);
         phraseViewModel = new ViewModelProvider(this).get(PhraseViewModel.class);
 
-        LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceTranslate = this;
         createDropDownList();
 
 
@@ -79,15 +79,15 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
     // creating dropdown
     protected void createDropDownList() {
 
-        final LiveData<List<LanguageSubscription>> subscribedLanguagesObservable = languageSubscriptionViewModel.getSubscribedLanguages();
-
+        final LiveData<List<LanguageSubscription>> subscribedLanguagesObservable
+                = languageSubscriptionViewModel.getSubscribedLanguages();
         subscribedLanguagesObservable.observe(this, new Observer<List<LanguageSubscription>>() {
             @Override
             public void onChanged(List<LanguageSubscription> subscriptionList) {
                 subscribedLanguagesObservable.removeObserver(this);
                 OfflineTranslateActivity.this.subscription = subscriptionList;
 
-                if(subscription.size() <= 0){
+                if (subscription.size() <= 0) {
                     conOffline.setVisibility(View.VISIBLE);
                     conOfflineTxt.setText("You haven't subscribed any languages");
                     return;
@@ -112,10 +112,12 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
 
-                        if (spinnerLanguage.getSelectedItemPosition() < 0 || spinnerLanguage.getSelectedItemPosition() >= spinnerLanguage.getCount())
+                        if (spinnerLanguage.getSelectedItemPosition() < 0 ||
+                                spinnerLanguage.getSelectedItemPosition() >=
+                                        spinnerLanguage.getCount())
                             return;
                         System.out.println(spinnerLanguage.getSelectedItemPosition());
-                        languageSubscription =  subscription.get(spinnerLanguage.getSelectedItemPosition());
+                        languageSubscription = subscription.get(spinnerLanguage.getSelectedItemPosition());
                         txtTransLang.setText(subscription.get(spinnerLanguage.getSelectedItemPosition()).getLang_name());
                         translateAllPhrases();
                     }
@@ -131,79 +133,35 @@ public class OfflineTranslateActivity extends AppCompatActivity implements Trans
 
     private void translateAllPhrases() {
 
-        if (Util.isConnectedToNetwork(this)) {
+        final LiveData<List<OfflineData>> translateWordListObservable = translationViewModel
+                .getTranslateWord(languageSubscription.getLang_code());
+        translateWordListObservable.observe(this, new Observer<List<OfflineData>>() {
+            @Override
+            public void onChanged(List<OfflineData> offlineData) {
+                translateWordListObservable.removeObserver(this);
 
-            final LiveData<List<Phrase>> phrasesListObservable = phraseViewModel.getAllPhrases();
-            phrasesListObservable.observe(this, new Observer<List<Phrase>>() {
-                @Override
-                public void onChanged(List<Phrase> phrases) {
-                    phrasesListObservable.removeObserver(this);
-                    phraseList = phrases;
+                LangTranslate languageTranslator = new LangTranslate();
 
-                    if(phraseList.size() <= 0){
-                        conOffline.setVisibility(View.VISIBLE);
-                        conOfflineTxt.setText("You haven't add any words/phrases");
-                        return;
-                    }
+                for (OfflineData offlineData1 : offlineData) {
 
-                    LangTranslate langTranslate = new LangTranslate();
-                    langTranslate.setLang_code(languageSubscription.getLang_code());
-                    for (int i = 0; i < phraseList.size(); i++) {
-                        langTranslate.setPhraseList(phrases.get(i).getPhrase());
-                    }
-
-                    LanguageTranslatorService.getLanguageTranslatorServiceInstance().translateAll(langTranslate);
+                    languageTranslator.setPhraseList(offlineData1.getPhrase());
+                    languageTranslator.setTranslation(offlineData1.getTranslate_phrase());
                 }
-            });
-        }else {
-            final LiveData<List<OfflineData>> translateWordListObeservalble = translationViewModel.getTranslateWord(languageSubscription.getLang_code());
 
-            translateWordListObeservalble.observe(this, new Observer<List<OfflineData>>() {
-                @Override
-                public void onChanged(List<OfflineData> offlineData) {
-                    translateWordListObeservalble.removeObserver(this);
-
-                    LangTranslate languageTranslator = new LangTranslate();
-
-                    for (OfflineData offlineData1: offlineData) {
-
-                        languageTranslator.setPhraseList(offlineData1.getPhrase());
-                        languageTranslator.setTranslation(offlineData1.getTranslate_phrase());
-                    }
-
-                    setupTranslationView(languageTranslator);
-                }
-            });
-        }
+                setupTranslationView(languageTranslator);
+            }
+        });
     }
 
-    @Override
-    public void translateLanguages(TranslationResult value) {
 
-    }
-
-    @Override
-    public void translateAll(LangTranslate value) {
-        System.out.println(value.getTranslations());
-        if (value.getTranslations().size() > 0) {
-            setupTranslationView(value);
-        }else{
-            value.getPhraseList().clear();
-            setupTranslationView(value);
-            Toast.makeText(OfflineTranslateActivity.this, "Sorry! Translation Failed",
-                    Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-    private void setupTranslationView(LangTranslate translates){
+    private void setupTranslationView(LangTranslate translates) {
         recyclerView = findViewById(R.id.translateAllRecuclar);
 
-        TranslateAllPhrasesAdapter translateAllPhrasesAdapter = new TranslateAllPhrasesAdapter(translates);
+        OfflineTranslatePhrasesAdapter translateAllPhrasesAdapter = new OfflineTranslatePhrasesAdapter(translates);
         recyclerView.setAdapter(translateAllPhrasesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        }
     }
+}
 

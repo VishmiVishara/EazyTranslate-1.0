@@ -28,14 +28,11 @@ import com.ibm.watson.language_translator.v3.model.TranslationResult;
 import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.adapter.TranslateLanguageDropDownAdapter;
 import com.iit.eazytranslate.adapter.TranslationAdapter;
-import com.iit.eazytranslate.database.model.DisplayLanguage;
 import com.iit.eazytranslate.database.model.LangTranslate;
-import com.iit.eazytranslate.database.model.Language;
 import com.iit.eazytranslate.database.model.LanguageSubscription;
 import com.iit.eazytranslate.database.model.Phrase;
 import com.iit.eazytranslate.database.model.Translate;
 import com.iit.eazytranslate.database.viewModel.LanguageSubscriptionViewModel;
-import com.iit.eazytranslate.database.viewModel.LanguageViewModel;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
 import com.iit.eazytranslate.database.viewModel.TranslationViewModel;
 import com.iit.eazytranslate.service.LanguageTranslatorService;
@@ -54,8 +51,6 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
     private TextView txtSelectedPhrase;
     private TranslateLanguageDropDownAdapter dataAdapter = null;
     private Spinner spinner;
-    private List<DisplayLanguage> displayLanguageList = new ArrayList();
-    private List<Language> languages;
     private Button btnPronounce;
     private Button btnTranslate;
     private TextView translatedPhase;
@@ -63,23 +58,29 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
     private List<LanguageSubscription> subscription;
     private CardView selectPhraseCardView;
     private PhraseViewModel phraseViewModel;
-    private LanguageViewModel languageViewModel;
     private LanguageSubscriptionViewModel languageSubscriptionViewModel;
     private TranslationViewModel translationViewModel;
     private ConstraintLayout conError;
     private TextView conErrorTxt;
+    private Button translateAll;
+    private List<Phrase> phraseList;
 
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(translationAdapter != null &&  translationAdapter.getSelectedPhrase() != null) {
-                selectedPhrase = translationAdapter.getSelectedPhrase();
-                txtSelectedPhrase.setText(selectedPhrase.getPhrase());
-                btnTranslate.setVisibility(View.VISIBLE);
-                btnPronounce.setVisibility(View.INVISIBLE);
-                btnTranslate.setEnabled(true);
-                translatedPhase.setText("");
-            }
+
+            Bundle bundle = intent.getExtras();
+            int selectedIndex = bundle.getInt("selected");
+
+            if (phraseList.size() <= selectedIndex)
+                return;
+
+            selectedPhrase = phraseList.get(selectedIndex);
+            txtSelectedPhrase.setText(selectedPhrase.getPhrase());
+            btnTranslate.setVisibility(View.VISIBLE);
+            btnPronounce.setVisibility(View.INVISIBLE);
+            btnTranslate.setEnabled(true);
+            translatedPhase.setText("");
         }
     };
 
@@ -103,6 +104,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
         selectPhraseCardView = findViewById(R.id.card_viewSelectPhrase);
         conError = findViewById(R.id.conError);
         conErrorTxt = findViewById(R.id.conErrorTxt);
+        translateAll = findViewById(R.id.btnTranAll);
 
         btnPronounce.setVisibility(View.INVISIBLE);
         selectPhraseCardView.setVisibility(View.INVISIBLE);
@@ -111,7 +113,8 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
         translationViewModel = new ViewModelProvider(TranslateActivity.this).get(TranslationViewModel.class);
 
         phraseViewModel.getAllPhrases().observe(this, phrases -> {
-            if(phrases.size() <= 0){
+            this.phraseList = phrases;
+            if (phrases.size() <= 0) {
                 conError.setVisibility(View.VISIBLE);
                 conErrorTxt.setText("You haven't add any phrases..");
                 return;
@@ -139,6 +142,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 System.out.println(spinner.getSelectedItemPosition());
                 System.out.println(subscription.get(spinner.getSelectedItemPosition()).getLang_code());
                 langTranslate.setLang_code(subscription.get(spinner.getSelectedItemPosition()).getLang_code());
+                langTranslate.setLanguageName(subscription.get(spinner.getSelectedItemPosition()).getLang_name());
                 btnPronounce.setVisibility(View.INVISIBLE);
                 btnTranslate.setVisibility(View.VISIBLE);
                 btnTranslate.setEnabled(true);
@@ -156,7 +160,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
             @Override
             public void onClick(View view) {
 
-                if (selectedPhrase == null || selectedPhrase.getPhrase().equals("")){
+                if (selectedPhrase == null || selectedPhrase.getPhrase().equals("")) {
                     Toast.makeText(TranslateActivity.this, "Please select a word or phrase",
                             Toast.LENGTH_LONG).show();
                     return;
@@ -164,19 +168,19 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 btnTranslate.setEnabled(false);
                 langTranslate.setPhrase(selectedPhrase.getPhrase());
 
-                final LiveData<Translate> isAlreadyTranslated  = translationViewModel.isAlreadyTranslated(selectedPhrase.getPid(),langTranslate.getLang_code());
+                final LiveData<Translate> isAlreadyTranslated = translationViewModel.isAlreadyTranslated(selectedPhrase.getPid(), langTranslate.getLang_code());
 
                 isAlreadyTranslated.observe(TranslateActivity.this, new Observer<Translate>() {
                     @Override
                     public void onChanged(Translate translate) {
                         isAlreadyTranslated.removeObserver(this);
 
-                        if(translate != null){
+                        if (translate != null) {
                             translatedPhase.setText(translate.getTranslatePhrase());
                             btnTranslate.setVisibility(View.INVISIBLE);
                             btnPronounce.setVisibility(View.VISIBLE);
                             btnTranslate.setEnabled(true);
-                        }else {
+                        } else {
 
                             if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
                                 Toast.makeText(TranslateActivity.this, "Your internet connection is not available",
@@ -206,9 +210,19 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 TextToSpeechService.getTextToSpeechService().setSelectedLanguageCode(langTranslate.getLang_code());
                 try {
                     TextToSpeechService.getTextToSpeechService().getTranslateResult(translatedPhase.getText().toString());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        translateAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TranslateActivity.this, TranslateAllActivity.class);
+                intent.putExtra("lan_code", langTranslate.getLang_code());
+                intent.putExtra("lan_name", langTranslate.getLanguageName());
+                startActivity(intent);
             }
         });
     }
@@ -233,7 +247,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
 
                 List<String> languageNames = new ArrayList<>();
 
-                for(LanguageSubscription languageSubscription : subscriptionList){
+                for (LanguageSubscription languageSubscription : subscriptionList) {
                     languageNames.add(languageSubscription.getLang_name());
                     System.out.println(languageSubscription);
                 }
@@ -245,8 +259,8 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(dataAdapter);
                 spinner.setSelection(dataAdapter.getCount());
-                }
-            });
+            }
+        });
 
     }
 
@@ -262,21 +276,20 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                     btnTranslate.setVisibility(View.INVISIBLE);
                 }
 
-                Translate translate =  new Translate();
+                Translate translate = new Translate();
                 translate.setTranslatePhrase(translatedPhase.getText().toString());
                 translate.setPid(selectedPhrase.getPid());
                 translate.setLanguageCode(langTranslate.getLang_code());
                 System.out.println(translate);
                 translationViewModel.add(translate);
 
-            }
-        else{
-            Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
-                    Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
+                        Toast.LENGTH_LONG).show();
 
-            btnPronounce.setVisibility(View.INVISIBLE);
-        }
-        }else{
+                btnPronounce.setVisibility(View.INVISIBLE);
+            }
+        } else {
             Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
                     Toast.LENGTH_LONG).show();
             btnPronounce.setVisibility(View.INVISIBLE);

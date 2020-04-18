@@ -103,7 +103,8 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
             viwBackground.setBackground(new ColorDrawable(0xFFBBDEFB));
             mAdapter.onItemHolderClick(TranslationAdapter.MyViewHolder.this);
             Intent intent = new Intent("selected_phrase_intent");
-            intent.putExtra("selected", phrasesDataset.get(selectedPosition).getPhrase() );
+            intent.putExtra("selected", selectedPosition);
+            System.out.println(phrasesDataset.get(selectedPosition) );
             LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(intent);
 
         }

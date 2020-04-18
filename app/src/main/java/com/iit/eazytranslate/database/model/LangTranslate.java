@@ -11,6 +11,15 @@ public class LangTranslate {
     private List<String> translation  = new ArrayList<>();
     private int pid;
     private List<String> phraseList = new ArrayList<>();
+    private List<Integer> pidList = new ArrayList<>();
+
+    public List<Integer> getPidList() {
+        return pidList;
+    }
+
+    public void setPidList(int index) {
+        this.pidList.add(index);
+    }
 
     public List<String> getPhraseList() {
         return phraseList;

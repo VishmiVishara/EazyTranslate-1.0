@@ -207,8 +207,11 @@
                 android:layout_height="match_parent"
                 android:background="#FFFFFF"
                 android:elevation="2dp"
-                tools:layout_editor_absoluteX="-28dp"
-                tools:layout_editor_absoluteY="24dp">
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/conOfflineTxt"
