@@ -2,6 +2,7 @@ package com.iit.eazytranslate.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,10 +29,14 @@ public class LauncherScreenActivity extends AppCompatActivity implements Transla
         LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceLoadLanguages = this;
         LanguageTranslatorService.getLanguageTranslatorServiceInstance().getLanguageList();
 
-        Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
-        startActivity(intent);
-        finish();
-
+        int secondsDelayed = 4;
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, secondsDelayed * 1000);
     }
 
     @Override

@@ -88,10 +88,10 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="24dp"
                         app:layout_constraintEnd_toEndOf="@+id/con1"
-                        app:layout_constraintHeight_percent="0.4"
+                        app:layout_constraintHeight_percent="0.35"
                         app:layout_constraintStart_toStartOf="@+id/con1"
                         app:layout_constraintTop_toTopOf="@+id/con1"
-                        app:layout_constraintWidth_percent="0.4"
+                        app:layout_constraintWidth_percent="0.35"
                         app:srcCompat="@drawable/enter" />
 
                     <TextView
@@ -159,10 +159,10 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="24dp"
                         app:layout_constraintEnd_toEndOf="@+id/con2"
-                        app:layout_constraintHeight_percent="0.4"
+                        app:layout_constraintHeight_percent="0.35"
                         app:layout_constraintStart_toStartOf="@+id/con2"
                         app:layout_constraintTop_toTopOf="@+id/con2"
-                        app:layout_constraintWidth_percent="0.4"
+                        app:layout_constraintWidth_percent="0.35"
                         app:srcCompat="@drawable/display" />
 
                     <TextView
@@ -244,10 +244,10 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="24dp"
                         app:layout_constraintEnd_toEndOf="@+id/con"
-                        app:layout_constraintHeight_percent="0.4"
+                        app:layout_constraintHeight_percent="0.35"
                         app:layout_constraintStart_toStartOf="@+id/con"
                         app:layout_constraintTop_toTopOf="@+id/con"
-                        app:layout_constraintWidth_percent="0.4"
+                        app:layout_constraintWidth_percent="0.35"
                         app:srcCompat="@drawable/edit" />
 
                     <TextView
@@ -315,10 +315,10 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="24dp"
                         app:layout_constraintEnd_toEndOf="@+id/con3"
-                        app:layout_constraintHeight_percent="0.4"
+                        app:layout_constraintHeight_percent="0.35"
                         app:layout_constraintStart_toStartOf="@+id/con3"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.4"
+                        app:layout_constraintWidth_percent="0.35"
                         app:srcCompat="@drawable/list" />
 
                     <TextView
@@ -405,7 +405,7 @@
                         app:layout_constraintHeight_percent="0.4"
                         app:layout_constraintStart_toStartOf="@+id/con4"
                         app:layout_constraintTop_toTopOf="@+id/con4"
-                        app:layout_constraintWidth_percent="0.4"
+                        app:layout_constraintWidth_percent="0.35"
                         app:srcCompat="@drawable/world" />
 
                     <TextView
@@ -472,10 +472,10 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="24dp"
                         app:layout_constraintEnd_toEndOf="@+id/con5"
-                        app:layout_constraintHeight_percent="0.4"
+                        app:layout_constraintHeight_percent="0.35"
                         app:layout_constraintStart_toStartOf="@+id/con5"
                         app:layout_constraintTop_toTopOf="@+id/con5"
-                        app:layout_constraintWidth_percent="0.4"
+                        app:layout_constraintWidth_percent="0.35"
                         app:srcCompat="@drawable/book" />
 
                     <TextView

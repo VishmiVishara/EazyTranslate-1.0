@@ -27,7 +27,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainScreenActivity" />
-        <activity android:name=".activity.WelcomeActivity" />
     </application>
 
 </manifest>
