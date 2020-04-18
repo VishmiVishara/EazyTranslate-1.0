@@ -20,7 +20,7 @@
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".47"
+        app:layout_constraintHeight_percent=".45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout30">
 
@@ -197,7 +197,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     android:gravity="center"
-                    android:hint="Select a Word/Phrase"
+                    android:hint="Select a Word/Phrase from Below"
                     android:text=""
                     android:textColor="#1E88E5"
                     android:textSize="18sp"
@@ -290,7 +290,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:fontFamily="@font/segoe"
-                    android:gravity="center_vertical"
+                    android:gravity="center|center_vertical"
                     android:text="Select a Pharse"
                     android:textColor="#1E88E5"
                     android:textSize="18sp"
@@ -299,16 +299,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintWidth_percent="0.4" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -322,7 +312,7 @@
                 app:backgroundTint="#64B5F6"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.2"
+                app:layout_constraintHeight_percent="0.23"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

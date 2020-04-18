@@ -100,7 +100,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
             for(View viw : viewArrayList){
                 viw.setBackground(new ColorDrawable(0xffffffff));
             }
-            viwBackground.setBackground(new ColorDrawable(0xFFBBDEFB));
+            viwBackground.setBackground(new ColorDrawable(0xFFD8F4BB));
             mAdapter.onItemHolderClick(TranslationAdapter.MyViewHolder.this);
             Intent intent = new Intent("selected_phrase_intent");
             intent.putExtra("selected_index", selectedPosition);
