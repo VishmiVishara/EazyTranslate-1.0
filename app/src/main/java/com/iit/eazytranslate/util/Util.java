@@ -3,11 +3,10 @@ package com.iit.eazytranslate.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.TextUtils;
 
 public class Util {
 
-
+    // checking network connectivity
     public static boolean isConnectedToNetwork(Context context){
         boolean connected = false;
         ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

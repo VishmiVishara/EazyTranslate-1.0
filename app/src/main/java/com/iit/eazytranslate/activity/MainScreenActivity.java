@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.util.Util;
 
+/*
+ * Activity for Main Screen
+ */
 public class MainScreenActivity extends AppCompatActivity {
 
     private Button addPhrases;
@@ -30,6 +33,7 @@ public class MainScreenActivity extends AppCompatActivity {
         initializeListeners();
     }
 
+    // init UI components
     private void initializeUIComponents() {
         addPhrases = findViewById(R.id.btnAddPhrases);
         displayPhrases = findViewById(R.id.btnDisplayPhrases);
@@ -39,6 +43,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnOfflineTranslate = findViewById(R.id.btnOfflineTranslate);
     }
 
+    // init listeners
     private void initializeListeners() {
 
         // add phrase button
@@ -95,8 +100,10 @@ public class MainScreenActivity extends AppCompatActivity {
         });
     }
 
+    // check network availability
     private void networkAvailability() {
         if (!Util.isConnectedToNetwork(MainScreenActivity.this)) {
+            // alert about offline
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             alertBuilder.setMessage("You are Offline!! Some translations will not work in Offline");
             alertBuilder.setCancelable(true);

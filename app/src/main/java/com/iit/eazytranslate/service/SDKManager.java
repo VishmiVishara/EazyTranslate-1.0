@@ -30,10 +30,6 @@ class SDKManager {
     }
 
     private void setLanguageTranslatorService() {
-//        IamAuthenticator authenticator = new IamAuthenticator("AugRWKS03xGiOyzcAct7Imih_St5_HSfCHpxr6dBheYb");
-//        LanguageTranslator languageTranslator = new LanguageTranslator("2018-05-01", authenticator);
-//        languageTranslator.setServiceUrl("https://api.eu-gb.language-translator.watson.cloud.ibm.com/instances/448cfd45-e056-400b-ab49-86a8c14b08ae");
-
         IamAuthenticator authenticator = new IamAuthenticator(App.getAppInstance().getResources().getString(R.string.language_translator_apikey));
         LanguageTranslator languageTranslator = new LanguageTranslator("2018-05-01", authenticator);
         languageTranslator.setServiceUrl(App.getAppInstance().getResources().getString(R.string.language_translator_url));
@@ -42,10 +38,6 @@ class SDKManager {
     }
 
     private void setTextToSpeech() {
-//        IamAuthenticator authenticator = new IamAuthenticator("5Hu7i33tNz4xBdwrqSXWsh1CnAC0Udk0Y29cSJD26KIW");
-//        TextToSpeech textToSpeech = new TextToSpeech(authenticator);
-//        textToSpeech.setServiceUrl("https://api.eu-gb.text-to-speech.watson.cloud.ibm.com/instances/b730efe1-da48-42b1-8312-105600c6b51a");
-
         IamAuthenticator authenticator = new IamAuthenticator(App.getAppInstance().getResources().getString(R.string.text_speech_iam_apikey));
         TextToSpeech textToSpeech = new TextToSpeech(authenticator);
         textToSpeech.setServiceUrl(App.getAppInstance().getResources().getString(R.string.text_speech_url));

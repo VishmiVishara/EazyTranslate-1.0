@@ -6,7 +6,6 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.iit.eazytranslate.database.model.LangTranslate;
 import com.iit.eazytranslate.database.model.OfflineData;
 import com.iit.eazytranslate.database.model.Translate;
 

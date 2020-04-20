@@ -46,6 +46,7 @@ public class LanguageSubscriptionAdapter extends RecyclerView.Adapter<LanguageSu
         holder.checkBoxSubscribe.setTag(position);
         holder.checkBoxSubscribe.setChecked(displayLanguage.isSubscribe());
 
+        // setting up check boxes
         holder.checkBoxSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -18,7 +18,10 @@ import com.iit.eazytranslate.database.model.Phrase;
 import java.util.ArrayList;
 import java.util.List;
 
-//https://developer.android.com/guide/topics/ui/layout/recyclerview#customizing
+/** https://developer.android.com. 2020. Create A List With Recyclerview.
+ * [online] Available at: <https://developer.android.com/guide/topics/ui/layout/recyclerview#customizing>
+ *[Accessed 03 April 2020].
+ * */
 public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.MyViewHolder> {
     private List<Phrase> phrasesDataset;
     private List<View> viewArrayList = new ArrayList<>();
@@ -35,7 +38,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
     }
 
     public Phrase getSelectedPhrase() {
-        System.out.println(selectedPosition + " nnnnnnnnnnn");
+        System.out.println(selectedPosition + " #######");
         return phrasesDataset.get(selectedPosition);
     }
 
@@ -104,6 +107,12 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
 
         }
 
+        /**
+         * Joseph, J., 2020. How To Pass Values From Recycleadapter To Mainactivity Or Other Activities.
+         * [online] Stack Overflow.
+         * Available at: <https://stackoverflow.com/questions/35008860/how-to-pass-values-from-recycleadapter-to-mainactivity-or-other-activities>
+         * [Accessed 4 April 2020].
+         * */
         @Override
         public void onClick(View v) {
             selectedPosition = getAdapterPosition();

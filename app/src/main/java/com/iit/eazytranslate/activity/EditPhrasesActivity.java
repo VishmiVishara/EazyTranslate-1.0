@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,7 +32,12 @@ import com.iit.eazytranslate.database.viewModel.TranslationViewModel;
 
 import java.util.List;
 
+/*
+ * Activity for Edit phrases
+ */
 public class EditPhrasesActivity extends AppCompatActivity {
+
+    private static final String TAG = "EditPhrasesActivity";
 
     private RecyclerView recyclerView;
     private Button btnEdit;
@@ -61,11 +67,13 @@ public class EditPhrasesActivity extends AppCompatActivity {
         initializeUIComponents();
         initializeListeners();
 
+        Log.v(TAG, "---------------- Set initial view --------------- ");
         reset();
 
         phraseViewModel = new ViewModelProvider(this).get(PhraseViewModel.class);
         translationViewModel = new ViewModelProvider(this).get(TranslationViewModel.class);
 
+        Log.v(TAG, "---------------- Getting Phrases --------------- ");
         phraseViewModel.getAllPhrases().observe(this, phrases -> {
             this.phrases = phrases;
 
@@ -85,10 +93,12 @@ public class EditPhrasesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String phraseTxt = phraseEditLayout.getEditText().getText().toString().toLowerCase().trim();
                 if (phraseTxt.equals("")) {
+                    Log.v(TAG, "---------------- Please select a word or a phrase --------------- ");
                     phraseEditLayout.setError("Please select a word or a phrase..");
                     return;
                 }
 
+                Log.v(TAG, "---------------- Checking Phrase is Existing --------------- ");
                 final LiveData<Phrase> phraseViewModelExistsPhrase = phraseViewModel.isExistsPhrase(phraseTxt);
                 phraseViewModelExistsPhrase.observe(EditPhrasesActivity.this, new Observer<Phrase>() {
                     @Override
@@ -107,12 +117,14 @@ public class EditPhrasesActivity extends AppCompatActivity {
                             translationViewModel.deleteById(selectedPhrase.getPid());
                             reset();
 
+                            Log.v(TAG, "---------------- Phrase Updated --------------- ");
                             Toast toast = Toast.makeText
                                     (EditPhrasesActivity.this, "Phrase Updated!",
                                             Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER, 0, 0);
                             toast.show();
                         } else {
+                            Log.v(TAG, "---------------- Sorry! It's not an existing phrase --------------- ");
                             Toast toast = Toast.makeText
                                     (EditPhrasesActivity.this, "Sorry! It's not an existing phrase",
                                             Toast.LENGTH_LONG);
@@ -126,6 +138,7 @@ public class EditPhrasesActivity extends AppCompatActivity {
         });
 
 
+        // btn edit
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,6 +156,7 @@ public class EditPhrasesActivity extends AppCompatActivity {
         });
     }
 
+    // init components
     private void initializeUIComponents() {
         recyclerView = findViewById(R.id.recyclerViewEdithPhrases);
         btnEdit = findViewById(R.id.btnEdit);
@@ -150,9 +164,11 @@ public class EditPhrasesActivity extends AppCompatActivity {
         phraseEditLayout = findViewById(R.id.phraseEditLayout);
         layoutError = findViewById(R.id.layoutError);
 
+        // set visibility in error layout
         layoutError.setVisibility(View.INVISIBLE);
     }
 
+    // msg BroadcastReceiver to get selected index in view
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -171,6 +187,7 @@ public class EditPhrasesActivity extends AppCompatActivity {
         }
     };
 
+    // view reset
     private void reset(){
         hideKeyboard(this);
         editStatus = false;
@@ -181,15 +198,16 @@ public class EditPhrasesActivity extends AppCompatActivity {
         phraseEditLayout.setEnabled(false);
     }
 
+    // hide the keyboard
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
 
-        View focusedView = activity.getCurrentFocus();
+        View currentFocusView = activity.getCurrentFocus();
 
-        if (focusedView != null) {
-            inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(),
+        if (currentFocusView != null) {
+            inputMethodManager.hideSoftInputFromWindow(currentFocusView.getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
         }
 

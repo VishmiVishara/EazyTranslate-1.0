@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,7 +46,13 @@ import com.iit.eazytranslate.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Activity for translate
+ */
 public class TranslateActivity extends AppCompatActivity implements TranslatorServiceTranslateImpl, TextToSpeechImpl {
+
+    private static final String TAG = "TranslateActivity";
+
     private RecyclerView recyclerView;
     private Phrase selectedPhrase;
     private TranslationAdapter translationAdapter;
@@ -66,6 +73,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
     private Button translateAll;
     private List<Phrase> phraseList;
 
+    // BroadcastReceiver get selected word from Ui
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -185,6 +193,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                             btnTranslate.setEnabled(true);
                         } else {
 
+                            // set a toast if internet not available
                             if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
                                 Toast toast = Toast.makeText(TranslateActivity.this, "Your internet connection is not available",
                                         Toast.LENGTH_LONG);
@@ -204,6 +213,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
             @Override
             public void onClick(View view) {
 
+                // set a toast if internet not available
                 if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
                     Toast toast = Toast.makeText(TranslateActivity.this, "Your internet connection not available",
                             Toast.LENGTH_LONG);
@@ -223,9 +233,18 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
             }
         });
 
+        // passing values to translate all activity
         translateAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // set a toast if internet not available
+                if (!Util.isConnectedToNetwork(TranslateActivity.this)) {
+                    Toast toast = Toast.makeText(TranslateActivity.this, "Your internet connection not available",
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    return;
+                }
                 Intent intent = new Intent(TranslateActivity.this, TranslateAllActivity.class);
                 intent.putExtra("lan_code", langTranslate.getLang_code());
                 intent.putExtra("language_name", langTranslate.getLanguageName());
@@ -240,6 +259,8 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
         languageSubscriptionViewModel = new ViewModelProvider(this).get(LanguageSubscriptionViewModel.class);
         final LiveData<List<LanguageSubscription>> subscribedLanguagesObservable = languageSubscriptionViewModel.getSubscribedLanguages();
 
+        // getting subscribed languages
+        Log.v(TAG, "----------------  getting subscribed languages --------------- ");
         subscribedLanguagesObservable.observe(this, new Observer<List<LanguageSubscription>>() {
             @Override
             public void onChanged(List<LanguageSubscription> subscriptionList) {
@@ -291,6 +312,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 translationViewModel.add(translate);
 
             } else {
+                Log.v(TAG, "---------------- Translation Failed --------------- ");
                 Toast toast = Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
                         Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
@@ -299,6 +321,7 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
                 btnPronounce.setVisibility(View.INVISIBLE);
             }
         } else {
+            Log.v(TAG, "---------------- Translation Failed --------------- ");
             Toast toast = Toast.makeText(TranslateActivity.this, "Sorry! Translation Failed",
                     Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);

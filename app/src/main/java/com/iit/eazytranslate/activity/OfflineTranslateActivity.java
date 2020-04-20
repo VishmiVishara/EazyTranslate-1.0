@@ -1,6 +1,7 @@
 package com.iit.eazytranslate.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -26,11 +27,16 @@ import com.iit.eazytranslate.database.viewModel.LanguageSubscriptionViewModel;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
 import com.iit.eazytranslate.database.viewModel.TranslationViewModel;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*
+ * Activity for Offline Translate
+ */
 public class OfflineTranslateActivity extends AppCompatActivity {
+
+    private static final String TAG = "OfflineTranslate";
 
     private Spinner spinnerLanguage;
     private TextView txtTransLang;
@@ -93,7 +99,8 @@ public class OfflineTranslateActivity extends AppCompatActivity {
 
                 for (LanguageSubscription languageSubscription : subscriptionList) {
                     languageNames.add(languageSubscription.getLang_name());
-                    System.out.println(languageSubscription);
+                    Log.v(TAG, "----------languageSubscription----------------: " + languageSubscription);
+                    //System.out.println(languageSubscription);
                 }
 
                 languageNames.add("Select a language");
@@ -113,7 +120,8 @@ public class OfflineTranslateActivity extends AppCompatActivity {
                                         spinnerLanguage.getCount())
                             return;
                         conOffline.setVisibility(View.INVISIBLE);
-                        System.out.println(spinnerLanguage.getSelectedItemPosition());
+                        //System.out.println(spinnerLanguage.getSelectedItemPosition());
+                        Log.v(TAG, "---------Selected Position--------:  " + spinnerLanguage.getSelectedItemPosition());
                         languageSubscription = subscription.get(spinnerLanguage.getSelectedItemPosition());
                         txtTransLang.setText(subscription.get(spinnerLanguage.getSelectedItemPosition()).getLang_name());
                         translateAllPhrases();
@@ -128,7 +136,9 @@ public class OfflineTranslateActivity extends AppCompatActivity {
         });
     }
 
+    // translate all phrases
     private void translateAllPhrases() {
+        //  get translated words
         final LiveData<List<OfflineData>> translateWordListObservable = translationViewModel
                 .getTranslateWord(languageSubscription.getLang_code());
 
@@ -154,6 +164,7 @@ public class OfflineTranslateActivity extends AppCompatActivity {
     }
 
 
+    // setup up translation view
     private void setupTranslationView(LangTranslate translates) {
         recyclerView = findViewById(R.id.translateAllRecuclar);
 

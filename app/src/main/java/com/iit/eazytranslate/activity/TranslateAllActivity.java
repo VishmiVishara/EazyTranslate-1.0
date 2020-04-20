@@ -1,6 +1,7 @@
 package com.iit.eazytranslate.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Spinner;
@@ -32,7 +33,13 @@ import com.iit.eazytranslate.util.TranslatorServiceTranslateImpl;
 
 import java.util.List;
 
-public class TranslateAllActivity extends AppCompatActivity implements TranslateAllCellTap, TextToSpeechImpl, TranslatorServiceTranslateImpl {
+/*
+ * Activity for Translate all saved words /phrases
+ */
+public class TranslateAllActivity extends AppCompatActivity implements
+        TranslateAllCellTap, TextToSpeechImpl, TranslatorServiceTranslateImpl {
+
+    private static final String TAG = "TranslateAll";
 
     private Spinner spinnerLanguage;
     private TextView txtTransLang;
@@ -54,12 +61,12 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
         setupActivity();
     }
 
-    private void setupActivity(){
+    private void setupActivity() {
         txtTransLang = findViewById(R.id.txtTransAll);
 
         Bundle bundle = getIntent().getExtras();
-        languageCode  = bundle.getString("lan_code");
-        languageName  = bundle.getString("language_name");
+        languageCode = bundle.getString("lan_code");
+        languageName = bundle.getString("language_name");
 
         txtTransLang.setText(languageName);
         translationViewModel = new ViewModelProvider(TranslateAllActivity.this).get(TranslationViewModel.class);
@@ -73,6 +80,8 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
     }
 
     private void translateAllPhrases() {
+
+        Log.v(TAG, "----------------  Getting phrases list --------------- ");
 
         final LiveData<List<Phrase>> phrasesListObservable = phraseViewModel.getAllPhrases();
         phrasesListObservable.observe(this, new Observer<List<Phrase>>() {
@@ -95,12 +104,13 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
                     langTranslate.setPidList(phrases.get(i).getPid());
                 }
 
+                // calling translate all service
                 LanguageTranslatorService.getLanguageTranslatorServiceInstance().translateAll(langTranslate);
             }
         });
     }
 
-    private void setupTranslationView(LangTranslate translates){
+    private void setupTranslationView(LangTranslate translates) {
         recyclerView = findViewById(R.id.recyclarViewTransAll);
 
         for (int i = 0; i < translates.getTranslations().size(); i++) {
@@ -125,6 +135,7 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
             });
         }
 
+        //setting recycler view
         TranslateAllAdapter translateAllPhrasesAdapter = new TranslateAllAdapter(translates, this);
         recyclerView.setAdapter(translateAllPhrasesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -135,7 +146,6 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
     @Override
     public void cellTap(String word) {
         TextToSpeechService.getTextToSpeechService().setSelectedLanguageCode(languageCode);
-
         TextToSpeechService.getTextToSpeechService().getTranslateResult(word);
     }
 
@@ -151,7 +161,7 @@ public class TranslateAllActivity extends AppCompatActivity implements Translate
 
     @Override
     public void translateAll(LangTranslate value) {
-
+        Log.v(TAG, "------- Result : "+  value.getTranslations() );
         System.out.println(value.getTranslations());
         if (value.getTranslations().size() > 0) {
             setupTranslationView(value);

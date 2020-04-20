@@ -1,6 +1,7 @@
 package com.iit.eazytranslate.service;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.ibm.watson.language_translator.v3.LanguageTranslator;
 import com.ibm.watson.language_translator.v3.model.IdentifiableLanguages;
@@ -8,20 +9,17 @@ import com.ibm.watson.language_translator.v3.model.TranslateOptions;
 import com.ibm.watson.language_translator.v3.model.Translation;
 import com.ibm.watson.language_translator.v3.model.TranslationResult;
 import com.iit.eazytranslate.database.model.LangTranslate;
-import com.iit.eazytranslate.database.model.Translate;
 import com.iit.eazytranslate.util.TranslatorServiceLoadLanguagesImpl;
 import com.iit.eazytranslate.util.TranslatorServiceTranslateImpl;
+
 
 public class LanguageTranslatorService {
 
     private static LanguageTranslatorService languageTranslatorServiceInstance = new LanguageTranslatorService();
-
     public TranslatorServiceLoadLanguagesImpl translatorServiceLoadLanguages;
-
     public TranslatorServiceTranslateImpl translatorServiceTranslate;
 
     private LanguageTranslatorService() {
-
     }
 
     public static LanguageTranslatorService getLanguageTranslatorServiceInstance() {
@@ -41,6 +39,7 @@ public class LanguageTranslatorService {
     }
 }
 
+// get languages from api
 class LanguageListTask extends AsyncTask<Void, Void, IdentifiableLanguages> {
     protected IdentifiableLanguages doInBackground(Void... urls) {
 
@@ -64,7 +63,10 @@ class LanguageListTask extends AsyncTask<Void, Void, IdentifiableLanguages> {
     }
 }
 
+// Translate from api
 class LanguageTranslateTask extends AsyncTask<LangTranslate, Integer, TranslationResult> {
+
+    private static final String TAG = "TranslateTask ";
 
     @Override
     protected TranslationResult doInBackground(LangTranslate... langTranslate) {
@@ -82,7 +84,8 @@ class LanguageTranslateTask extends AsyncTask<LangTranslate, Integer, Translatio
 
         }
         catch (Exception e) {
-          e.printStackTrace();
+          //e.printStackTrace();
+            Log.e(TAG, "[ERROR] " + e.getMessage());
         }
 
         return translationResult;
@@ -97,13 +100,17 @@ class LanguageTranslateTask extends AsyncTask<LangTranslate, Integer, Translatio
     }
 }
 
+// Translate all from api
 class LanguageTranslateListTask extends AsyncTask<LangTranslate, Integer, LangTranslate> {
+
+    private static final String TAG = "TranslateListTask ";
 
     @Override
     protected LangTranslate doInBackground(LangTranslate... langTranslates) {
         try {
             TranslationResult translationResult = null;
 
+            // building translate options
             TranslateOptions translateOptions = new TranslateOptions
                                                             .Builder()
                                                             .text(langTranslates[0].getPhraseList())
@@ -120,7 +127,8 @@ class LanguageTranslateListTask extends AsyncTask<LangTranslate, Integer, LangTr
                 }
             }
         } catch (Exception e) {
-          e.printStackTrace();
+          //e.printStackTrace();
+            Log.e(TAG, "[ERROR] " + e.getMessage());
         }
         return langTranslates[0];
     }

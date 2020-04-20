@@ -7,18 +7,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.adapter.DisplayPhrasesAdapter;
-import com.iit.eazytranslate.database.DbManager;
-import com.iit.eazytranslate.database.model.Phrase;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
-import com.iit.eazytranslate.util.Config;
 
-import java.util.List;
-
+ /*
+  * Activity for display phrases
+  */
 public class DisplayPhrasesActivity extends AppCompatActivity {
+
+    private static final String TAG = "DisplayPhrasesActivity";
 
     private RecyclerView recyclerView;
     private TextView error;
@@ -43,6 +44,7 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
                 recyclerView.setAdapter(phraseDisplayAdapter);
             }
             else {
+                Log.v(TAG, "----------------Please Add Word/Phrases to View.. --------------- ");
                 error.setText("Please Add Word/Phrases to View..");
             }
         });

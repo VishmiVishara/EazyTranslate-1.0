@@ -1,6 +1,7 @@
 package com.iit.eazytranslate.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +32,12 @@ import com.iit.eazytranslate.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Activity for Language Subscription
+ */
 public class LanguageSubscriptionActivity extends AppCompatActivity implements TranslatorServiceLoadLanguagesImpl {
+
+    private static final String TAG = "LanguageSubscription";
 
     private RecyclerView recyclerViewLanguages;
     private ConstraintLayout layoutError;
@@ -54,19 +60,21 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
     }
 
     private void setupActivity(){
-        recyclerViewLanguages = findViewById(R.id.recyclerViewLanguages);
-        layoutError  = findViewById(R.id.layoutError);
-        btnDownload = findViewById(R.id.btnDownload);
+
+        initializeUIComponents();
+        initializeListeners();
 
         layoutError.setVisibility(View.INVISIBLE);
 
         LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceLoadLanguages = this;
 
+        Log.v(TAG, "-------------------Loading language List---------------------");
         languageViewModel = new ViewModelProvider(this).get(LanguageViewModel.class);
         languageViewModel.getLanguages().observe(this, languageList -> {
             this.languages = languageList;
 
             if(languages.size() <= 0){
+                Log.v(TAG, "------- Language List is Empty -----");
                 layoutError.setVisibility(View.VISIBLE);
                 return;
             }
@@ -78,6 +86,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                 displayLanguageList.add(viewLanguage);
             }
 
+            Log.v(TAG, "------------------- Loading language Subscriptions ---------------------");
             languageSubscriptionViewModel = new ViewModelProvider(this)
                     .get(LanguageSubscriptionViewModel.class);
             final LiveData<List<LanguageSubscription>>subscribedLanguagesObservable =
@@ -86,42 +95,48 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                     (this, new Observer<List<LanguageSubscription>>() {
                 @Override
                 public void onChanged(List<LanguageSubscription> subscriptionList) {
-                    subscribedLanguagesObservable.removeObserver(this);
+                    subscribedLanguagesObservable.removeObserver(this); //removing observer to avoid repeating
 
                     LanguageSubscriptionActivity.this.subscriptions = subscriptionList;
                     System.out.println(subscriptionList);
                     for(LanguageSubscription languageSubscription : subscriptionList){
-                        ViewLanguage findObj = findObjectFormDisplayList(languageSubscription.getLang_name());
+                        ViewLanguage findObj = findLangFormDisplayList(languageSubscription.getLang_name());
                         if (findObj != null){
-                            System.out.println("hello" + findObj.getLanguageName());
+                            Log.v(TAG, "----- Lang Name : " + findObj.getLanguageName());
+                            //System.out.println("hello" + findObj.getLanguageName());
                             findObj.setSubscribe(languageSubscription.getSubscribed());
 
                         }
                     }
-                    System.out.println(subscriptionList);
+                    Log.v(TAG, "----- Subscription List : " + subscriptionList.toString());
+                    //System.out.println(subscriptionList);
                     languageSubscriptionAdapter = new LanguageSubscriptionAdapter(displayLanguageList);
                     recyclerViewLanguages.setAdapter(languageSubscriptionAdapter);
                 }
             });
         });
 
+        // connect recycler view to the layout manager
         recyclerViewLanguages.setLayoutManager(new LinearLayoutManager
                 (this, LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration
                 (recyclerViewLanguages.getContext(), LinearLayoutManager.VERTICAL);
         recyclerViewLanguages.addItemDecoration(dividerItemDecoration);
-
-        initializeUIComponents();
-        initializeListeners();
-
     }
 
+    // init UI components
     private void initializeUIComponents() {
         btnUpdate = findViewById(R.id.btnUpdate);
+        recyclerViewLanguages = findViewById(R.id.recyclerViewLanguages);
+        layoutError  = findViewById(R.id.layoutError);
+        btnDownload = findViewById(R.id.btnDownload);
     }
 
+
+    // init listeners
     private void initializeListeners() {
 
+        // updating subscribed languages in the db
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,7 +146,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                 for (ViewLanguage lang : langList) {
                     if(lang.isSubscribe()) {
                         LanguageSubscription languageSubscription = new LanguageSubscription();
-                        Language language = findObject(lang.getLanguageName(), false);
+                        Language language = find(lang.getLanguageName(), false);
 
                         languageSubscription.setLang_code(language.getLang_code());
                         languageSubscription.setLang_name(lang.getLanguageName());
@@ -142,6 +157,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
                 }
 
                 languageSubscriptionViewModel.add(languageSubscriptionList);
+                Log.v(TAG, "----- Updating Subscribed Languages -----" );
                 Toast toast = Toast.makeText(LanguageSubscriptionActivity.this,
                         "Updated Subscribed Languages!", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
@@ -149,10 +165,12 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
             }
         });
 
+        // btn download listener -  if the language list not available
         btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Log.v(TAG, "----- Checking for internet Connectivity -----");
                 if (!Util.isConnectedToNetwork(LanguageSubscriptionActivity.this)){
                     Toast.makeText(LanguageSubscriptionActivity.this,
                             "Internet connection not available.!", Toast.LENGTH_LONG).show();
@@ -174,7 +192,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
             displayLanguageList.add(displayLanguage);
         }
 
-        layoutError.setVisibility(View.INVISIBLE);
+        layoutError.setVisibility(View.INVISIBLE); //setting language list null error invisible
         languageSubscriptionAdapter = new LanguageSubscriptionAdapter(displayLanguageList);
         recyclerViewLanguages.setAdapter(languageSubscriptionAdapter);
 
@@ -185,7 +203,8 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
         recyclerViewLanguages.addItemDecoration(dividerItemDecoration);
     }
 
-    private Language findObject(String lang, Boolean isCode) {
+    // find languages
+    private Language find(String lang, Boolean isCode) {
         Language foundObject = null;
         for (Language language : languages) {
 
@@ -204,7 +223,7 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
         return  foundObject;
     }
 
-    private ViewLanguage findObjectFormDisplayList(String lang) {
+    private ViewLanguage findLangFormDisplayList(String lang) {
         ViewLanguage foundObject = null;
         for(ViewLanguage language : displayLanguageList) {
             if (language.getLanguageName().equals(lang)){
@@ -217,8 +236,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
 
     @Override
     public void loadLanguages(IdentifiableLanguages value) {
-        if (languages == null)
+        if (languages == null) {
+            Log.v(TAG, "----- Languages list is NULL -----");
             return;
+        }
         int index = 0;
         for (IdentifiableLanguage language : value.getLanguages()) {
             Language lang = new Language();

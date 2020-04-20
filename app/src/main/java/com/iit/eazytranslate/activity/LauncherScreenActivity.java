@@ -3,6 +3,7 @@ package com.iit.eazytranslate.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,7 +16,12 @@ import com.iit.eazytranslate.database.viewModel.LanguageViewModel;
 import com.iit.eazytranslate.service.LanguageTranslatorService;
 import com.iit.eazytranslate.util.TranslatorServiceLoadLanguagesImpl;
 
+/*
+ * Activity for Launcher Screen / language List download
+ */
 public class LauncherScreenActivity extends AppCompatActivity implements TranslatorServiceLoadLanguagesImpl {
+
+    private static final String TAG = "LauncherScreenActivity";
 
     private LanguageViewModel languageViewModel;
 
@@ -29,6 +35,7 @@ public class LauncherScreenActivity extends AppCompatActivity implements Transla
         LanguageTranslatorService.getLanguageTranslatorServiceInstance().translatorServiceLoadLanguages = this;
         LanguageTranslatorService.getLanguageTranslatorServiceInstance().getLanguageList();
 
+        // delay 4 seconds and auto load the main activity
         int secondsDelayed = 4;
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -41,6 +48,7 @@ public class LauncherScreenActivity extends AppCompatActivity implements Transla
 
     @Override
     public void loadLanguages(IdentifiableLanguages languages) {
+        Log.v(TAG, "---------------- Load Languages --------------- ");
 
         if (languages == null)
             return;
@@ -51,7 +59,6 @@ public class LauncherScreenActivity extends AppCompatActivity implements Transla
             lang.setLanguage(language.getName());
             languageViewModel.add(lang);
         }
-
 
     }
 

@@ -3,6 +3,7 @@ package com.iit.eazytranslate.database.model;
 import java.util.ArrayList;
 import java.util.List;
 
+// Lang Translate
 public class LangTranslate {
     private String lang_code;
     private String phrase;

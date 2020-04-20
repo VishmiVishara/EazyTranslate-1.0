@@ -68,7 +68,7 @@ public class EditPhraseAdapter extends RecyclerView.Adapter<EditPhraseAdapter.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        // each data item is just a string in this case
+
         public TextView textView;
         public RadioButton radioButton;
         private EditPhraseAdapter mAdapter;
@@ -82,6 +82,12 @@ public class EditPhraseAdapter extends RecyclerView.Adapter<EditPhraseAdapter.My
             radioButton.setOnClickListener(this);
         }
 
+        /**
+         * Joseph, J., 2020. How To Pass Values From Recycleadapter To Mainactivity Or Other Activities.
+         * [online] Stack Overflow.
+         * Available at: <https://stackoverflow.com/questions/35008860/how-to-pass-values-from-recycleadapter-to-mainactivity-or-other-activities>
+         * [Accessed 4 April 2020].
+         * */
         @Override
         public void onClick(View v) {
             selectedPosition = getAdapterPosition();
