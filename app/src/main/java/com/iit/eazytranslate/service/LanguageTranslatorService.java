@@ -12,7 +12,9 @@ import com.iit.eazytranslate.database.model.LangTranslate;
 import com.iit.eazytranslate.util.TranslatorServiceLoadLanguagesImpl;
 import com.iit.eazytranslate.util.TranslatorServiceTranslateImpl;
 
-
+/**
+ * Language Translate Service
+ */
 public class LanguageTranslatorService {
 
     private static LanguageTranslatorService languageTranslatorServiceInstance = new LanguageTranslatorService();

@@ -46,6 +46,10 @@ public class TextToSpeechService {
 
         private static final String TAG = "TextToSpeechTask";
 
+        /**
+         * @param phrases phrase to speak
+         * @return 0 or 1 ti indicate success or false
+         */
         @Override
         protected Integer doInBackground(String... phrases) {
 
@@ -100,6 +104,7 @@ public class TextToSpeechService {
                         .synthesize(synthesizeOptions).execute().getResult());
 
             }catch (Exception e){
+                // log error
                 Log.e(TAG, "[ERROR] " + e.getMessage());
                 return 0;
             }

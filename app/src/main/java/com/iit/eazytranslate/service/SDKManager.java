@@ -29,6 +29,7 @@ class SDKManager {
         return languageTranslatorService;
     }
 
+    // config for Language Traslator Service
     private void setLanguageTranslatorService() {
         IamAuthenticator authenticator = new IamAuthenticator(App.getAppInstance().getResources().getString(R.string.language_translator_apikey));
         LanguageTranslator languageTranslator = new LanguageTranslator("2018-05-01", authenticator);
@@ -37,6 +38,7 @@ class SDKManager {
         this.languageTranslatorService = languageTranslator;
     }
 
+    // config for Text to Speech Service
     private void setTextToSpeech() {
         IamAuthenticator authenticator = new IamAuthenticator(App.getAppInstance().getResources().getString(R.string.text_speech_iam_apikey));
         TextToSpeech textToSpeech = new TextToSpeech(authenticator);
