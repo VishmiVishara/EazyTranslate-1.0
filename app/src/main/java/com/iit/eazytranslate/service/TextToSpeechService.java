@@ -10,12 +10,10 @@ import com.ibm.watson.text_to_speech.v1.model.Voice;
 import com.ibm.watson.text_to_speech.v1.model.Voices;
 import com.iit.eazytranslate.util.TextToSpeechImpl;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-/**
- * Codelabs.developers.google.com. 2020. Android Fundamentals 10.1 Part A: Room, Livedata, And Viewmodel. [online]
- * Available at: <https://codelabs.developers.google.com/codelabs/android-training-livedata-viewmodel/#0>
- * [Accessed 18 April 2020].
- * */
+/* Cloud.ibm.com. 2020. Text To Speech - IBM Cloud API Docs. [online]
+ * Available at: <https://cloud.ibm.com/apidocs/text-to-speech/text-to-speech?code=java#get-pronunciation>
+ * [Accessed 20 April 2020].
+ */
 public class TextToSpeechService {
 
     // creating singleton object
@@ -70,6 +68,11 @@ public class TextToSpeechService {
                 String selectedLanguageCode = TextToSpeechService.getTextToSpeechService().getSelectedLanguageCode();
                 String voiceName = SynthesizeOptions.Voice.EN_US_LISAVOICE;
 
+                /*
+                 * Cloud.ibm.com. 2020. Text To Speech - IBM Cloud API Docs. [online]
+                 * Available at: <https://cloud.ibm.com/apidocs/text-to-speech/text-to-speech?code=java#list-voices>
+                 [Accessed 20 April 2020].
+                 * */
                 // get list of voice models
                 Voices voices = SDKManager.getSdkManager().getTextToSpeechService().listVoices().execute().getResult();
 

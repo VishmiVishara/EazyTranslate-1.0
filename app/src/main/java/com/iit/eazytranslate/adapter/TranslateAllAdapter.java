@@ -14,9 +14,9 @@ import com.iit.eazytranslate.database.model.LangTranslate;
 import com.iit.eazytranslate.util.TranslateAllCellTap;
 
 
-/** https://developer.android.com. 2020. Create A List With Recyclerview.
+/* https://developer.android.com. 2020. Create A List With Recyclerview.
  * [online] Available at: <https://developer.android.com/guide/topics/ui/layout/recyclerview#customizing>
- *[Accessed 03 April 2020].
+ * [Accessed 03 April 2020].
  * */
 public class TranslateAllAdapter extends RecyclerView.Adapter<TranslateAllAdapter.MyViewHolder>{
     private LangTranslate phrasesList;

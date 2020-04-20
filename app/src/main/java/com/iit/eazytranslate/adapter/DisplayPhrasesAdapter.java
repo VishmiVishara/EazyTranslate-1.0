@@ -13,7 +13,7 @@ import com.iit.eazytranslate.database.model.Phrase;
 
 import java.util.List;
 
-/** https://developer.android.com. 2020. Create A List With Recyclerview.
+/* https://developer.android.com. 2020. Create A List With Recyclerview.
   * [online] Available at: <https://developer.android.com/guide/topics/ui/layout/recyclerview#customizing>
   *[Accessed 03 April 2020].
   * */

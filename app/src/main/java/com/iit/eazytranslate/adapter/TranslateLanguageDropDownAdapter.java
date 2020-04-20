@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-/**
+/*
  * One, H. and Kuijpers, P., 2020.
  * How To Make An Android Spinner With Initial Text "Select One"?. [online] Stack Overflow.
  * Available at: <https://stackoverflow.com/questions/867518/how-to-make-an-android-spinner-with-initial-text-select-one>

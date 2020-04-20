@@ -82,7 +82,7 @@ public class EditPhraseAdapter extends RecyclerView.Adapter<EditPhraseAdapter.My
             radioButton.setOnClickListener(this);
         }
 
-        /**
+        /*
          * Joseph, J., 2020. How To Pass Values From Recycleadapter To Mainactivity Or Other Activities.
          * [online] Stack Overflow.
          * Available at: <https://stackoverflow.com/questions/35008860/how-to-pass-values-from-recycleadapter-to-mainactivity-or-other-activities>

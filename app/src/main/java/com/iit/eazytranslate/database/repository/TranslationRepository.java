@@ -12,7 +12,7 @@ import com.iit.eazytranslate.database.model.Translate;
 
 import java.util.List;
 
-/**
+/*
  * Codelabs.developers.google.com. 2020. Android Fundamentals 10.1 Part A: Room, Livedata, And Viewmodel. [online]
  * Available at: <https://codelabs.developers.google.com/codelabs/android-training-livedata-viewmodel/#0>
  *[Accessed 17 April 2020].
