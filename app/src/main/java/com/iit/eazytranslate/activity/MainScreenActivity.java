@@ -100,6 +100,9 @@ public class MainScreenActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * check network availability
+     */
     // check network availability
     private void networkAvailability() {
         if (!Util.isConnectedToNetwork(MainScreenActivity.this)) {

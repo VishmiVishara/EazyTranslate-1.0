@@ -164,6 +164,10 @@ public class OfflineTranslateActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * setup the translation view
+     * @param translates Lang translate model
+     */
     // setup up translation view
     private void setupTranslationView(LangTranslate translates) {
         recyclerView = findViewById(R.id.translateAllRecuclar);

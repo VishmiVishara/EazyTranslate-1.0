@@ -19,8 +19,9 @@ import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.database.model.Phrase;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
 
-/*
- * Activity for Add phrases
+/**
+ *  <h1>Add Phrase Activity!</h1>
+ *  Add word / Phrases to the translation application to save for translation
  */
 public class AddPhrasesActivity extends AppCompatActivity {
 
@@ -37,17 +38,27 @@ public class AddPhrasesActivity extends AppCompatActivity {
         setupActivity();
     }
 
+
+    /**
+     * this method is to setup the activity
+     */
     private void setupActivity() {
         phraseViewModel = new ViewModelProvider(this).get(PhraseViewModel.class);
         initializeUIComponents();
         initializeListeners();
     }
 
+    /**
+     * this method is to initialize the UI components
+     */
     private void initializeUIComponents() {
         phraseInputLayout = findViewById(R.id.phraseInputLayout);
         btnSave = findViewById(R.id.btnSave);
     }
 
+    /**
+     * init Listeners
+     */
     private void initializeListeners() {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +85,10 @@ public class AddPhrasesActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * this method is to save added phrase / word in DB
+     * @param phraseTxt string typed string phrase
+     */
     private void dbOperations(String phraseTxt) {
 
         if (phraseTxt.equals("")) {

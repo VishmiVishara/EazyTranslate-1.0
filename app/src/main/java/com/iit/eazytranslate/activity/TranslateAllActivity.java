@@ -143,6 +143,10 @@ public class TranslateAllActivity extends AppCompatActivity implements
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
+    /**
+     *
+     * @param word string phrase / word
+     */
     @Override
     public void cellTap(String word) {
         TextToSpeechService.getTextToSpeechService().setSelectedLanguageCode(languageCode);
@@ -159,6 +163,10 @@ public class TranslateAllActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     *
+     * @param value langTranslate
+     */
     @Override
     public void translateAll(LangTranslate value) {
         Log.v(TAG, "------- Result : "+  value.getTranslations() );

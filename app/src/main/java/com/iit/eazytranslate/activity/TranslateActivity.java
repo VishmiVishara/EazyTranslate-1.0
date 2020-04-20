@@ -292,6 +292,10 @@ public class TranslateActivity extends AppCompatActivity implements TranslatorSe
 
     }
 
+    /**
+     *
+     * @param translation TranslationResult from IBM api
+     */
     @Override
     public void translateLanguages(TranslationResult translation) {
         btnTranslate.setEnabled(true);

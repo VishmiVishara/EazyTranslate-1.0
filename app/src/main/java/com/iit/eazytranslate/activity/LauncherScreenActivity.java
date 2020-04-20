@@ -16,8 +16,9 @@ import com.iit.eazytranslate.database.viewModel.LanguageViewModel;
 import com.iit.eazytranslate.service.LanguageTranslatorService;
 import com.iit.eazytranslate.util.TranslatorServiceLoadLanguagesImpl;
 
-/*
- * Activity for Launcher Screen / language List download
+/**
+ *  <h1> Launcher Screen Activity</h1>
+ *   Launcher Screen
  */
 public class LauncherScreenActivity extends AppCompatActivity implements TranslatorServiceLoadLanguagesImpl {
 
@@ -46,6 +47,10 @@ public class LauncherScreenActivity extends AppCompatActivity implements Transla
         }, secondsDelayed * 1000);
     }
 
+    /**
+     *
+     * @param languages IdentifiableLanguages from IBM api
+     */
     @Override
     public void loadLanguages(IdentifiableLanguages languages) {
         Log.v(TAG, "---------------- Load Languages --------------- ");

@@ -32,8 +32,9 @@ import com.iit.eazytranslate.database.viewModel.TranslationViewModel;
 
 import java.util.List;
 
-/*
- * Activity for Edit phrases
+/**
+ *  <h1>Edit Phrases Activity!</h1>
+ *  Edit word / Phrases added from add phrases
  */
 public class EditPhrasesActivity extends AppCompatActivity {
 
@@ -63,6 +64,9 @@ public class EditPhrasesActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("message_subject_intent"));
     }
 
+    /**
+     * this method is to setup the view
+     */
     private void setupActivity() {
         initializeUIComponents();
         initializeListeners();
@@ -86,7 +90,9 @@ public class EditPhrasesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
-
+    /**
+     * this method is to init lisners
+     */
     private void initializeListeners() {
         btnEditSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +162,9 @@ public class EditPhrasesActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * init UI components
+     */
     // init components
     private void initializeUIComponents() {
         recyclerView = findViewById(R.id.recyclerViewEdithPhrases);
@@ -187,6 +196,9 @@ public class EditPhrasesActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * reset method to revert the UI to initial view
+     */
     // view reset
     private void reset(){
         hideKeyboard(this);
@@ -198,6 +210,11 @@ public class EditPhrasesActivity extends AppCompatActivity {
         phraseEditLayout.setEnabled(false);
     }
 
+
+    /**
+     * This method is to hide the key board
+     * @param activity current activity
+     */
     // hide the keyboard
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =

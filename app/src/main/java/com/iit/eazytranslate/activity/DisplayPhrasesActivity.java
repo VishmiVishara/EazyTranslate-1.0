@@ -14,9 +14,10 @@ import com.iit.eazytranslate.R;
 import com.iit.eazytranslate.adapter.DisplayPhrasesAdapter;
 import com.iit.eazytranslate.database.viewModel.PhraseViewModel;
 
- /*
-  * Activity for display phrases
-  */
+/**
+ *  <h1> Display Phrases Activity </h1>
+ *  Display word / Phrases added from Add phrase function
+ */
 public class DisplayPhrasesActivity extends AppCompatActivity {
 
     private static final String TAG = "DisplayPhrasesActivity";
@@ -33,6 +34,11 @@ public class DisplayPhrasesActivity extends AppCompatActivity {
         setupActivity();
     }
 
+    /**
+     * This method is to setup UI components
+     * Load phases list
+     * and feed it to recycler view
+     */
     private void setupActivity(){
         recyclerView = findViewById(R.id.recyclerView);
         error = findViewById(R.id.error);

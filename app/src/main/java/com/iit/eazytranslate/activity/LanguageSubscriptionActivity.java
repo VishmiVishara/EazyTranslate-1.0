@@ -32,8 +32,9 @@ import com.iit.eazytranslate.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Activity for Language Subscription
+/**
+ *  <h1> Language Subscription Activity</h1>
+ *  Subscribe Languages
  */
 public class LanguageSubscriptionActivity extends AppCompatActivity implements TranslatorServiceLoadLanguagesImpl {
 
@@ -182,6 +183,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
         });
     }
 
+    /**
+     *
+     * @param languageList downloaded language list from IBM api
+     */
     private void setupDownloadRecycleView(List<Language> languageList){
 
         this.languages = languageList;
@@ -223,6 +228,11 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
         return  foundObject;
     }
 
+    /**
+     *
+     * @param lang language name
+     * @return Viewlanguage object to display in the view
+     */
     private ViewLanguage findLangFormDisplayList(String lang) {
         ViewLanguage foundObject = null;
         for(ViewLanguage language : displayLanguageList) {
@@ -234,6 +244,10 @@ public class LanguageSubscriptionActivity extends AppCompatActivity implements T
         return  foundObject;
     }
 
+    /**
+     *
+     * @param value IdentifiableLanguages list from IBM api
+     */
     @Override
     public void loadLanguages(IdentifiableLanguages value) {
         if (languages == null) {
